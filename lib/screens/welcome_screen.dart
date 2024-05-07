@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movil/screens/login_screen.dart';
 import 'package:movil/screens/signup_screen.dart';
+import 'package:movil/widgets/navbar_roots.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -25,9 +26,15 @@ class WelcomeScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
+                            return const NavBarRoots();
+                          },
+                        ));
+                      },
                       child: const Text(
-                        'Omitir',
+                        'SKIP',
                         style:
                             TextStyle(color: Color(0xFF042440), fontSize: 20),
                       )),
@@ -36,7 +43,7 @@ class WelcomeScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(20),
                     child: Image.asset('assets/images/logo.png')),
                 const Text(
-                  '"Mejor Cuidado, Mascotas Felices"',
+                  '"Better Care, Happy Pets"',
                   style: TextStyle(
                     color: Color.fromARGB(164, 4, 36, 64),
                     fontSize: 20,
