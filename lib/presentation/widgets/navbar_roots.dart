@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movil/presentation/screens/appointments_screen.dart';
 import 'package:movil/presentation/screens/home_screen.dart';
 
 class NavBarRoots extends StatefulWidget {
@@ -11,7 +12,7 @@ class NavBarRoots extends StatefulWidget {
 class _NavBarRootsState extends State<NavBarRoots> {
   int _selectedIndex = 0;
 
-  final _screens = [const HomeScreen(), Container(), Container(), Container()];
+  final _screens = [const HomeScreen(), const AppointmentScreen(), Container(), Container()];
 
   @override
   Widget build(BuildContext context) {
