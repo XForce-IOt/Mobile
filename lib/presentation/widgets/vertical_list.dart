@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movil/presentation/widgets/clinic_card.dart';
 import 'package:movil/presentation/widgets/pet_card.dart';
 
 class VerticalList extends StatelessWidget {
@@ -24,13 +25,12 @@ class VerticalList extends StatelessWidget {
               child: ListView(
             scrollDirection: Axis.vertical,
             children: [
-              PetCard(),
-              PetCard(),
-              PetCard(),
-              PetCard(),
-              PetCard(),
-              PetCard(),
-              PetCard()
+              ClinicCard(),
+              ClinicCard(),
+              ClinicCard(),
+              ClinicCard(),
+              ClinicCard(),
+              ClinicCard()
             ],
           ))
         ],
