@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:movil/presentation/widgets/create_appontment.dart';
 import 'package:movil/presentation/widgets/horizontal_list_petcards.dart';
-import 'package:movil/presentation/widgets/pet_card.dart';
 import 'package:movil/presentation/widgets/vertical_list.dart';
 
 class AppointmentScreen extends StatelessWidget {
@@ -9,7 +9,6 @@ class AppointmentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //child: Text("Appointment Screen"),
       body: Column(
         children: [
           Container(
@@ -26,12 +25,13 @@ class AppointmentScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 30),
-                HorizontalListPetCards()
+                HorizontalListPetCards() //Lista de mascotas horizontal mascota de la que pertenecen los datos - cambiar por overlay
               ],
             ),
           ),
           Expanded(
-              child: VerticalList()
+              child: //VerticalList()
+              CreateAppointmentData()
           )
         ],
       ),

@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   font_awesome_flutter: ^10.7.0
   flutter_rating_stars: ^1.1.0
+  omni_datetime_picker: ^1.1.0
 
 dev_dependencies:
   flutter_test:
