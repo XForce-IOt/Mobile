@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movil/presentation/widgets/clinic_card.dart';
-import 'package:movil/presentation/widgets/pet_card.dart';
-import 'package:movil/presentation/widgets/veterinarian_card.dart';
+import 'package:movil/application/appointment_function/ui/clinic_card.dart';
+import 'package:movil/application/appointment_function/ui/pet_card.dart';
+import 'package:movil/application/appointment_function/ui/veterinarian_card.dart';
 
 class VerticalList extends StatelessWidget {
   const VerticalList({super.key});

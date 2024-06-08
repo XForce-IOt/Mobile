@@ -1,10 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:movil/presentation/widgets/create_appontment.dart';
-import 'package:movil/presentation/widgets/horizontal_list_petcards.dart';
-import 'package:movil/presentation/widgets/vertical_list.dart';
+import 'package:movil/application/appointment_function/bloc/pets_bloc.dart';
+import 'package:movil/application/appointment_function/bloc/pets_event.dart';
+import 'package:movil/application/appointment_function/bloc/pets_state.dart';
+import 'package:movil/application/appointment_function/ui/create_appontment.dart';
+import 'package:movil/application/appointment_function/ui/horizontal_list_petcards.dart';
+import 'package:movil/application/appointment_function/ui/vertical_list.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AppointmentScreen extends StatelessWidget {
+class AppointmentScreen extends StatefulWidget {
   const AppointmentScreen({super.key});
+
+  @override
+  State<AppointmentScreen> createState() => _AppointmentScreenState();
+}
+
+class _AppointmentScreenState extends State<AppointmentScreen> {
+  final PetsBloc petsBloc = PetsBloc();
+
+  @override
+  void initState() {
+    petsBloc.add(PetsInitialFetchEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,22 +34,37 @@ class AppointmentScreen extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20))),
-            child: const Column(
+            child: Column(
               children: [
-                SizedBox(height: 30),
-                Text(
+                const SizedBox(height: 30),
+                const Text(
                   "Schedule appointments",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 30),
-                HorizontalListPetCards() //Lista de mascotas horizontal mascota de la que pertenecen los datos - cambiar por overlay
+                const SizedBox(height: 30),
+                BlocConsumer<PetsBloc, PetsState>(
+                  bloc: petsBloc,
+                  listenWhen: (previous, current) => current is PetsActionState,
+                  buildWhen: (previous, current) => current is! PetsActionState,
+                  listener: (context, state) {},
+                  builder: (context, state) {
+                    switch (state.runtimeType) {
+                      case PetsFetchingSuccesfulState:
+                        final successState =
+                            state as PetsFetchingSuccesfulState;
+                        return HorizontalListPetCards(pets: successState.pets); //Lista de mascotas horizontal mascota de la que pertenecen los datos - cambiar por overlay
+
+                      default:
+                      return CircularProgressIndicator();
+                    }
+                  },
+                )
               ],
             ),
           ),
           Expanded(
               child: //VerticalList()
-              CreateAppointmentData()
-          )
+                  CreateAppointmentData())
         ],
       ),
     );
