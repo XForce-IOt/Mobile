@@ -211,7 +211,7 @@ class ActivityPhysicsScreen extends StatelessWidget {
     switch (label) {
       case 'Heart Rate':
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => HeartRateScreen()),
+          MaterialPageRoute(builder: (context) => const HeartRateScreen()),
         );
         break;
       case 'GPS':
