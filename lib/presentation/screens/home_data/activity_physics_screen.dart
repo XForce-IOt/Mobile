@@ -221,7 +221,7 @@ class ActivityPhysicsScreen extends StatelessWidget {
         break;
       case 'Hydration':
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => HydrationScreen()),
+          MaterialPageRoute(builder: (context) => const HydrationScreen()),
         );
         break;
       case 'Sleep Quality':
