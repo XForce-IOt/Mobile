@@ -214,12 +214,12 @@ class HeartRateScreen extends StatelessWidget {
         break;
       case 'Sleep Quality':
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => SleepQualityScreen()),
+          MaterialPageRoute(builder: (context) => const SleepQualityScreen()),
         );
         break;
       case 'Temperature':
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => TemperatureScreen()),
+          MaterialPageRoute(builder: (context) => const TemperatureScreen()),
         );
         break;
       // Agrega más casos para las demás opciones de botón...
