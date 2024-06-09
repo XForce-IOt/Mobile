@@ -157,7 +157,7 @@ class _GpsScreenState extends State<GpsScreen> {
         _controller = controller;
       },
       onTap: _addMarker,
-      initialCameraPosition: CameraPosition(
+      initialCameraPosition: const CameraPosition(
         target:
             LatLng(-12.0464, -77.0428), // Coordenadas de ejemplo (Lima, Perú)
         zoom: 14,
