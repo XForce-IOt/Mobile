@@ -6,12 +6,14 @@ import 'package:movil/presentation/screens/home_data/hydration_screen.dart';
 import 'package:movil/presentation/screens/home_data/temperature_screen.dart';
 
 class SleepQualityScreen extends StatelessWidget {
-  final Color customColor = Color(0xFF2BBCC5);
+  final Color customColor = const Color(0xFF2BBCC5);
   final String userName = "John Doe"; // Nombre del usuario
   final String petName = "Vaguito"; // Nombre de la mascota
   final String petBreed = "Golden Retriever"; // Raza de la mascota
 
   final double sleepPercentage = 75.0;
+
+  const SleepQualityScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +26,14 @@ class SleepQualityScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.person,
                   color: Colors.white,
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Text(
                   userName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -40,12 +42,14 @@ class SleepQualityScreen extends StatelessWidget {
               ],
             ),
             IconButton(
-              icon: Icon(Icons.notifications),
+              icon: const Icon(Icons.notifications),
               color: Colors.white,
               onPressed: () {
                 // Acción del botón de notificaciones
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Notification button pressed')),
+                  const SnackBar(
+                    content: Text('Notification button pressed'),
+                  ),
                 );
               },
             ),
@@ -65,13 +69,13 @@ class SleepQualityScreen extends StatelessWidget {
                     size: 50,
                     color: customColor,
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         petName,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -89,8 +93,8 @@ class SleepQualityScreen extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Align(
               alignment: Alignment.centerLeft, // Alinea el texto a la izquierda
               child: Text(
@@ -105,9 +109,10 @@ class SleepQualityScreen extends StatelessWidget {
           // Cuadro para mostrar datos de Sleep Quality
           Container(
             margin: const EdgeInsets.symmetric(vertical: 16.0),
-            constraints: BoxConstraints(
+            constraints: const BoxConstraints(
               maxWidth: 350, // Ajusta el ancho máximo aquí
-              maxHeight: 250, // Ajusta la altura máxima aquí para hacer el gráfico más grande
+              maxHeight:
+                  250, // Ajusta la altura máxima aquí para hacer el gráfico más grande
             ),
             decoration: BoxDecoration(
               color: Colors.transparent,
@@ -118,20 +123,23 @@ class SleepQualityScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Transform.scale(
-                  scale: 2.5, // Ajusta el factor de escala según el tamaño deseado
+                  scale:
+                      2.5, // Ajusta el factor de escala según el tamaño deseado
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       CircularProgressIndicator(
                         value: sleepPercentage / 100,
                         strokeWidth: 10, // Grosor de la línea del gráfico
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                        valueColor:
+                            const AlwaysStoppedAnimation<Color>(Colors.blue),
                         backgroundColor: Colors.grey[300],
                       ),
-                      SizedBox(height: 8), // Espaciador entre el gráfico y el texto
+                      const SizedBox(
+                          height: 8), // Espaciador entre el gráfico y el texto
                       Text(
                         '$sleepPercentage Points', // Muestra el porcentaje encima del gráfico
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
@@ -148,7 +156,8 @@ class SleepQualityScreen extends StatelessWidget {
             child: Row(
               children: [
                 _buildElevatedButton(Icons.favorite, 'Heart Rate', context),
-                _buildElevatedButton(Icons.directions_run, 'Activity Physics', context),
+                _buildElevatedButton(
+                    Icons.directions_run, 'Activity Physics', context),
                 _buildElevatedButton(Icons.thermostat, 'Temperature', context),
                 _buildElevatedButton(Icons.gps_fixed, 'GPS', context),
                 _buildElevatedButton(Icons.local_drink, 'Hydration', context),
@@ -160,7 +169,8 @@ class SleepQualityScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildElevatedButton(IconData icon, String label, BuildContext context) {
+  Widget _buildElevatedButton(
+      IconData icon, String label, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ElevatedButton(
@@ -168,11 +178,13 @@ class SleepQualityScreen extends StatelessWidget {
           _navigateToScreen(label, context);
         },
         style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 14.0), // Ajusta el tamaño del botón
+          padding: const EdgeInsets.symmetric(
+              vertical: 16.0, horizontal: 14.0), // Ajusta el tamaño del botón
           backgroundColor: Colors.white,
           side: BorderSide(color: customColor),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0), // Ajusta la esquina del botón
+            borderRadius:
+                BorderRadius.circular(10.0), // Ajusta la esquina del botón
           ),
         ),
         child: Column(
@@ -182,7 +194,7 @@ class SleepQualityScreen extends StatelessWidget {
               icon,
               color: customColor,
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               label,
               style: TextStyle(
@@ -194,26 +206,28 @@ class SleepQualityScreen extends StatelessWidget {
       ),
     );
   }
+
   void _navigateToScreen(String label, BuildContext context) {
     switch (label) {
       case 'Heart Rate':
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => HeartRateScreen()),
+          MaterialPageRoute(builder: (context) => const HeartRateScreen()),
         );
         break;
       case 'GPS':
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => GpsScreen()),
+          MaterialPageRoute(builder: (context) => const GpsScreen()),
         );
         break;
       case 'Hydration':
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => HydrationScreen()),
+          MaterialPageRoute(builder: (context) => const HydrationScreen()),
         );
         break;
       case 'Activity Physics':
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => ActivityPhysicsScreen()),
+          MaterialPageRoute(
+              builder: (context) => const ActivityPhysicsScreen()),
         );
         break;
       case 'Temperature':
@@ -221,7 +235,7 @@ class SleepQualityScreen extends StatelessWidget {
           MaterialPageRoute(builder: (context) => TemperatureScreen()),
         );
         break;
-    // Agrega más casos para las demás opciones de botón...
+      // Agrega más casos para las demás opciones de botón...
       default:
       // Manejar caso por defecto
     }
