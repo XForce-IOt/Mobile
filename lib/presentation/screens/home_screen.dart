@@ -7,6 +7,8 @@ import 'package:movil/presentation/screens/home_data/sleep_quality_screen.dart';
 import 'package:movil/presentation/screens/home_data/temperature_screen.dart';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,18 +16,21 @@ class HomeScreen extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomeScreen(),
+      home: const MyHomeScreen(),
     );
   }
 }
 
 class MyHomeScreen extends StatefulWidget {
+  const MyHomeScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _MyHomeScreenState createState() => _MyHomeScreenState();
 }
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
-  final Color customColor = Color(0xFF2BBCC5);
+  final Color customColor = const Color(0xFF2BBCC5);
   final String userName = "Emerson Quispe";
   final String petName = "Vaguito";
   final String petBreed = "Golden Retriever";
@@ -41,14 +46,14 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
           children: [
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.person,
                   color: Colors.white,
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Text(
                   userName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -57,12 +62,14 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
               ],
             ),
             IconButton(
-              icon: Icon(Icons.notifications),
+              icon: const Icon(Icons.notifications),
               color: Colors.white,
               onPressed: () {
                 // Acción del botón de notificaciones
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Notification button pressed')),
+                  const SnackBar(
+                    content: Text('Notification button pressed'),
+                  ),
                 );
               },
             ),
@@ -82,13 +89,13 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                     size: 50,
                     color: customColor,
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         petName,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -106,7 +113,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
               ),
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -138,14 +145,14 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
               ),
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
         ],
       ),
     );
   }
 
-  Widget _buildElevatedButton(IconData icon, String label,
-      BuildContext context) {
+  Widget _buildElevatedButton(
+      IconData icon, String label, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ElevatedButton(
@@ -155,12 +162,13 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white,
           side: BorderSide(color: customColor),
-          padding: EdgeInsets.all(10.0), // Ajusta el espacio interno del botón
+          padding:
+              const EdgeInsets.all(10.0), // Ajusta el espacio interno del botón
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-                5.0), // Ajusta la esquina del botón
+            borderRadius:
+                BorderRadius.circular(5.0), // Ajusta la esquina del botón
           ),
-          minimumSize: Size(0, 100), // Ajusta la altura del botón
+          minimumSize: const Size(0, 100), // Ajusta la altura del botón
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -169,7 +177,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
               icon,
               color: customColor,
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               label,
               style: TextStyle(
@@ -186,35 +194,36 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
     switch (label) {
       case 'Heart Rate':
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => HeartRateScreen()),
+          MaterialPageRoute(builder: (context) => const HeartRateScreen()),
         );
         break;
       case 'Activity Physics':
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => ActivityPhysicsScreen()),
+          MaterialPageRoute(
+              builder: (context) => const ActivityPhysicsScreen()),
         );
         break;
       case 'GPS':
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => GpsScreen()),
+          MaterialPageRoute(builder: (context) => const GpsScreen()),
         );
         break;
       case 'Hydration':
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => HydrationScreen()),
+          MaterialPageRoute(builder: (context) => const HydrationScreen()),
         );
         break;
       case 'Sleep Quality':
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => SleepQualityScreen()),
+          MaterialPageRoute(builder: (context) => const SleepQualityScreen()),
         );
         break;
       case 'Temperature':
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => TemperatureScreen()),
+          MaterialPageRoute(builder: (context) => const TemperatureScreen()),
         );
         break;
-    // Agrega más casos para las demás opciones de botón...
+      // Agrega más casos para las demás opciones de botón...
       default:
       // Manejar caso por defecto
     }
