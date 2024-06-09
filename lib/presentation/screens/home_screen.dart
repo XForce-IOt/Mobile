@@ -1,231 +1,125 @@
 import 'package:flutter/material.dart';
-import 'package:movil/presentation/screens/home_data/heart_rate_screen.dart';
-import 'package:movil/presentation/screens/home_data/activity_physics_screen.dart';
-import 'package:movil/presentation/screens/home_data/gps_screen.dart';
-import 'package:movil/presentation/screens/home_data/hydration_screen.dart';
-import 'package:movil/presentation/screens/home_data/sleep_quality_screen.dart';
-import 'package:movil/presentation/screens/home_data/temperature_screen.dart';
+import 'package:movil/presentation/widgets/home/elevated_button_widget.dart';
+import 'package:movil/presentation/widgets/home/pet_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Home',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF2BBCC5),
+        elevation: 0,
+        title: const UserTitle(userName: "Emerson Quispe"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            color: Colors.white,
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Notification button pressed'),
+                ),
+              );
+            },
+          ),
+        ],
       ),
-      home: const MyHomeScreen(),
+      body: const HomeBody(),
     );
   }
 }
 
-class MyHomeScreen extends StatefulWidget {
-  const MyHomeScreen({super.key});
+class UserTitle extends StatelessWidget {
+  final String userName;
 
-  @override
-  // ignore: library_private_types_in_public_api
-  _MyHomeScreenState createState() => _MyHomeScreenState();
-}
-
-class _MyHomeScreenState extends State<MyHomeScreen> {
-  final Color customColor = const Color(0xFF2BBCC5);
-  final String userName = "Emerson Quispe";
-  final String petName = "Vaguito";
-  final String petBreed = "Golden Retriever";
+  const UserTitle({required this.userName, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: customColor,
-        elevation: 0,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
+    return Row(
+      children: [
+        const Icon(
+          Icons.person,
+          color: Colors.white,
+        ),
+        const SizedBox(width: 8),
+        Text(
+          userName,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class HomeBody extends StatelessWidget {
+  const HomeBody({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [
+        PetCard(),
+        SizedBox(height: 16),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  userName,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                ButtonRow(buttons: [
+                  ButtonConfig(icon: Icons.favorite, label: 'Heart Rate'),
+                  ButtonConfig(
+                      icon: Icons.directions_run, label: 'Activity Physics'),
+                  ButtonConfig(icon: Icons.thermostat, label: 'Temperature'),
+                ]),
+                ButtonRow(buttons: [
+                  ButtonConfig(
+                      icon: Icons.brightness_2, label: 'Sleep Quality'),
+                  ButtonConfig(icon: Icons.gps_fixed, label: 'GPS'),
+                  ButtonConfig(icon: Icons.local_drink, label: 'Hydration'),
+                ]),
               ],
             ),
-            IconButton(
-              icon: const Icon(Icons.notifications),
-              color: Colors.white,
-              onPressed: () {
-                // Acción del botón de notificaciones
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Notification button pressed'),
-                  ),
-                );
-              },
-            ),
-          ],
+          ),
         ),
-      ),
-      body: Column(
-        children: [
-          Card(
-            margin: const EdgeInsets.all(16.0),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.pets,
-                    size: 50,
-                    color: customColor,
-                  ),
-                  const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        petName,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        petBreed,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildElevatedButton(
-                          Icons.favorite, 'Heart Rate', context),
-                      _buildElevatedButton(
-                          Icons.directions_run, 'Activity Physics', context),
-                      _buildElevatedButton(
-                          Icons.thermostat, 'Temperature', context),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildElevatedButton(
-                          Icons.brightness_2, 'Sleep Quality', context),
-                      _buildElevatedButton(Icons.gps_fixed, 'GPS', context),
-                      _buildElevatedButton(
-                          Icons.local_drink, 'Hydration', context),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-        ],
-      ),
+        SizedBox(height: 16),
+      ],
     );
   }
+}
 
-  Widget _buildElevatedButton(
-      IconData icon, String label, BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ElevatedButton(
-        onPressed: () {
-          _navigateToScreen(label, context);
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          side: BorderSide(color: customColor),
-          padding:
-              const EdgeInsets.all(10.0), // Ajusta el espacio interno del botón
-          shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(5.0), // Ajusta la esquina del botón
-          ),
-          minimumSize: const Size(0, 100), // Ajusta la altura del botón
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: customColor,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: TextStyle(
-                color: customColor,
-              ),
-            ),
-          ],
-        ),
-      ),
+class ButtonRow extends StatelessWidget {
+  final List<ButtonConfig> buttons;
+
+  const ButtonRow({
+    required this.buttons,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: buttons
+          .map((buttonConfig) => ElevatedButtonWidget(
+                icon: buttonConfig.icon,
+                label: buttonConfig.label,
+              ))
+          .toList(),
     );
   }
+}
 
-  void _navigateToScreen(String label, BuildContext context) {
-    switch (label) {
-      case 'Heart Rate':
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const HeartRateScreen()),
-        );
-        break;
-      case 'Activity Physics':
-        Navigator.of(context).push(
-          MaterialPageRoute(
-              builder: (context) => const ActivityPhysicsScreen()),
-        );
-        break;
-      case 'GPS':
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const GpsScreen()),
-        );
-        break;
-      case 'Hydration':
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const HydrationScreen()),
-        );
-        break;
-      case 'Sleep Quality':
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const SleepQualityScreen()),
-        );
-        break;
-      case 'Temperature':
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const TemperatureScreen()),
-        );
-        break;
-      // Agrega más casos para las demás opciones de botón...
-      default:
-      // Manejar caso por defecto
-    }
-  }
+class ButtonConfig {
+  final IconData icon;
+  final String label;
+
+  const ButtonConfig({required this.icon, required this.label});
 }
