@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:movil/presentation/screens/home_data/heart_rate_screen.dart';
-import 'package:movil/presentation/screens/home_data/activity_physics_screen.dart';
-import 'package:movil/presentation/screens/home_data/hydration_screen.dart';
-import 'package:movil/presentation/screens/home_data/sleep_quality_screen.dart';
-import 'package:movil/presentation/screens/home_data/temperature_screen.dart';
+import 'package:movil/presentation/widgets/home/elevated_button_widget.dart';
+import 'package:movil/presentation/widgets/home/pet_card.dart';
 
 class GpsScreen extends StatefulWidget {
   const GpsScreen({super.key});
@@ -14,10 +11,8 @@ class GpsScreen extends StatefulWidget {
 }
 
 class _GpsScreenState extends State<GpsScreen> {
-  final Color customColor = Color(0xFF2BBCC5);
-  final String userName = "John Doe"; // Nombre del usuario
-  final String petName = "Vaguito"; // Nombre de la mascota
-  final String petBreed = "Golden Retriever"; // Raza de la mascota
+  final Color customColor = const Color(0xFF2BBCC5);
+  final String userName = "John Doe";
 
   GoogleMapController? _controller;
   Set<Marker> _markers = {};
@@ -29,79 +24,43 @@ class _GpsScreenState extends State<GpsScreen> {
         backgroundColor: customColor,
         elevation: 0,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                SizedBox(width: 8),
-                Text(
-                  userName,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            IconButton(
-              icon: Icon(Icons.notifications),
+            const Icon(
+              Icons.person,
               color: Colors.white,
-              onPressed: () {
-                // Acción del botón de notificaciones
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Notification button pressed')),
-                );
-              },
+            ),
+            const SizedBox(width: 8),
+            Text(
+              userName,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            color: Colors.white,
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Notification button pressed'),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
-          Card(
-            margin: const EdgeInsets.all(16.0),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.pets,
-                    size: 50,
-                    color: customColor,
-                  ),
-                  SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        petName,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        petBreed,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          const PetCard(),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Align(
-              alignment: Alignment.centerLeft, // Alinea el texto a la izquierda
+              alignment: Alignment.centerLeft,
               child: Text(
                 'GPS',
                 style: TextStyle(
@@ -111,12 +70,11 @@ class _GpsScreenState extends State<GpsScreen> {
               ),
             ),
           ),
-          // Cuadro para mostrar datos
           Container(
             margin: const EdgeInsets.symmetric(vertical: 16.0),
             padding: const EdgeInsets.all(16.0),
-            constraints: BoxConstraints(
-              maxWidth: 350, // Ajusta el ancho máximo aquí
+            constraints: const BoxConstraints(
+              maxWidth: 350,
               maxHeight: 250,
             ),
             decoration: BoxDecoration(
@@ -125,18 +83,32 @@ class _GpsScreenState extends State<GpsScreen> {
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Center(
-              child: _buildGoogleMap(),
+              child: GoogleMap(
+                onMapCreated: (controller) {
+                  _controller = controller;
+                },
+                onTap: _addMarker,
+                initialCameraPosition: const CameraPosition(
+                  target: LatLng(-12.0464, -77.0428),
+                  zoom: 14,
+                ),
+                markers: _markers,
+              ),
             ),
           ),
-          SingleChildScrollView(
+          const SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                _buildElevatedButton(Icons.favorite, 'Heart Rate', context),
-                _buildElevatedButton(Icons.directions_run, 'Activity Physics', context),
-                _buildElevatedButton(Icons.thermostat, 'Temperature', context),
-                _buildElevatedButton(Icons.brightness_2, 'Sleep Quality', context),
-                _buildElevatedButton(Icons.local_drink, 'Hydration', context),
+                ElevatedButtonWidget(icon: Icons.favorite, label: 'Heart Rate'),
+                ElevatedButtonWidget(
+                    icon: Icons.directions_run, label: 'Activity Physics'),
+                ElevatedButtonWidget(
+                    icon: Icons.thermostat, label: 'Temperature'),
+                ElevatedButtonWidget(
+                    icon: Icons.brightness_2, label: 'Sleep Quality'),
+                ElevatedButtonWidget(
+                    icon: Icons.local_drink, label: 'Hydration'),
               ],
             ),
           ),
@@ -145,19 +117,6 @@ class _GpsScreenState extends State<GpsScreen> {
     );
   }
 
-  Widget _buildGoogleMap() {
-      return GoogleMap(
-        onMapCreated: (controller) {
-          _controller = controller;
-        },
-        onTap: _addMarker,
-        initialCameraPosition: CameraPosition(
-          target: LatLng(-12.0464, -77.0428), // Coordenadas de ejemplo (Lima, Perú)
-          zoom: 14,
-        ),
-        markers: _markers,
-      );
-  }
   void _addMarker(LatLng position) {
     setState(() {
       _markers.clear();
@@ -168,72 +127,5 @@ class _GpsScreenState extends State<GpsScreen> {
         ),
       );
     });
-  }
-
-  Widget _buildElevatedButton(IconData icon, String label, BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ElevatedButton(
-        onPressed: () {
-          _navigateToScreen(label, context);
-        },
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 14.0), // Ajusta el tamaño del botón
-          backgroundColor: Colors.white,
-          side: BorderSide(color: customColor),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0), // Ajusta la esquina del botón
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: customColor,
-            ),
-            SizedBox(height: 8),
-            Text(
-              label,
-              style: TextStyle(
-                color: customColor,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-  void _navigateToScreen(String label, BuildContext context) {
-    switch (label) {
-      case 'Heart Rate':
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => HeartRateScreen()),
-        );
-        break;
-      case 'Activity Physics':
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => ActivityPhysicsScreen()),
-        );
-        break;
-      case 'Hydration':
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => HydrationScreen()),
-        );
-        break;
-      case 'Sleep Quality':
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => SleepQualityScreen()),
-        );
-        break;
-      case 'Temperature':
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => TemperatureScreen()),
-        );
-        break;
-    // Agrega más casos para las demás opciones de botón...
-      default:
-      // Manejar caso por defecto
-    }
   }
 }
