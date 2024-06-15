@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:movil/application/appointment_function/ui/clinic_card.dart';
-import 'package:movil/application/appointment_function/ui/pet_card.dart';
 import 'package:movil/application/appointment_function/ui/veterinarian_card.dart';
 
 class VerticalList extends StatelessWidget {
@@ -18,14 +17,14 @@ class VerticalList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Text("Select a Clinic",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
           Expanded(
               child: ListView(
             scrollDirection: Axis.vertical,
-            children: [
+            children: const [
               ClinicCard(),
               ClinicCard(),
               ClinicCard(),
