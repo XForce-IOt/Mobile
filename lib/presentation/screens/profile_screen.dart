@@ -1,6 +1,10 @@
+// ignore_for_file: avoid_print, prefer_const_declarations
+
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -8,13 +12,16 @@ class ProfileScreen extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyProfileScreen(),
+      home: const MyProfileScreen(),
     );
   }
 }
 
 class MyProfileScreen extends StatefulWidget {
+  const MyProfileScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _MyProfileScreenState createState() => _MyProfileScreenState();
 }
 
@@ -35,26 +42,29 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       print('Phone: $_phone');
       print('Email: $_email');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Form submitted successfully!')),
+        const SnackBar(content: Text('Form submitted successfully!')),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final Color customColor = Color(0xFF2BBCC5);
+    final Color customColor = const Color(0xFF2BBCC5);
     return Scaffold(
       appBar: AppBar(
         title: Container(
           padding: const EdgeInsets.all(8.0),
-          child: Text('Profile',
+          child: const Text(
+            'Profile',
             style: TextStyle(
               color: Colors.white, // Color del texto del título
               fontWeight: FontWeight.bold,
-            ),),
+            ),
+          ),
         ),
         centerTitle: true, // Centrar el título en la AppBar
-        backgroundColor: customColor, // Fondo transparente para que el contenedor sea visible
+        backgroundColor:
+            customColor, // Fondo transparente para que el contenedor sea visible
         elevation: 0, // Sin sombra
       ),
       body: Center(
@@ -70,8 +80,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   size: 100,
                   color: customColor,
                 ),
-                SizedBox(height: 5),
-                Text(
+                const SizedBox(height: 5),
+                const Text(
                   'Personal Information',
                   style: TextStyle(
                     fontSize: 18,
@@ -79,11 +89,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 SizedBox(
                   width: 250,
                   child: TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Name',
                     ),
@@ -98,11 +108,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     },
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 SizedBox(
                   width: 250,
                   child: TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Last Name',
                     ),
@@ -117,11 +127,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     },
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 SizedBox(
                   width: 250,
                   child: TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Address',
                     ),
@@ -136,11 +146,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     },
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 SizedBox(
                   width: 250,
                   child: TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Phone',
                     ),
@@ -155,11 +165,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     },
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 SizedBox(
                   width: 250,
                   child: TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Email',
                     ),
@@ -178,13 +188,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     },
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _submitForm,
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: customColor,
+                    foregroundColor: Colors.white,
+                    backgroundColor: customColor,
                   ),
-                  child: Text('Save'),
+                  child: const Text('Save'),
                 ),
               ],
             ),
