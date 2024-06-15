@@ -4,7 +4,6 @@ import 'package:movil/application/appointment_function/bloc/pets_event.dart';
 import 'package:movil/application/appointment_function/bloc/pets_state.dart';
 import 'package:movil/application/appointment_function/ui/create_appontment.dart';
 import 'package:movil/application/appointment_function/ui/horizontal_list_petcards.dart';
-import 'package:movil/application/appointment_function/ui/vertical_list.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppointmentScreen extends StatefulWidget {
@@ -49,20 +48,22 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   listener: (context, state) {},
                   builder: (context, state) {
                     switch (state.runtimeType) {
-                      case PetsFetchingSuccesfulState:
+                      case PetsFetchingSuccesfulState _:
                         final successState =
                             state as PetsFetchingSuccesfulState;
-                        return HorizontalListPetCards(pets: successState.pets); //Lista de mascotas horizontal mascota de la que pertenecen los datos - cambiar por overlay
+                        return HorizontalListPetCards(
+                            pets: successState
+                                .pets); //Lista de mascotas horizontal mascota de la que pertenecen los datos - cambiar por overlay
 
                       default:
-                      return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                     }
                   },
                 )
               ],
             ),
           ),
-          Expanded(
+          const Expanded(
               child: //VerticalList()
                   CreateAppointmentData())
         ],
