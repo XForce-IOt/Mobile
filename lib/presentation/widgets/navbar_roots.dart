@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movil/presentation/screens/home_screen.dart';
+import 'package:movil/presentation/screens/profile_screen.dart';
 
 class NavBarRoots extends StatefulWidget {
   const NavBarRoots({super.key});
