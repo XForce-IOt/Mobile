@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movil/presentation/screens/appointments_screen.dart';
 import 'package:movil/presentation/screens/home_screen.dart';
 import 'package:movil/presentation/screens/profile_screen.dart';
+import 'package:movil/presentation/screens/settings_screen.dart';
 
 class NavBarRoots extends StatefulWidget {
   const NavBarRoots({super.key});
@@ -17,7 +18,7 @@ class _NavBarRootsState extends State<NavBarRoots> {
     const HomeScreen(),
     const AppointmentScreen(),
     const ProfileScreen(),
-    Container(),
+    const SettingsScreen(),
   ];
 
   @override
