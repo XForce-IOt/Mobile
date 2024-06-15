@@ -15,6 +15,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Home',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -32,10 +33,10 @@ class MyHomeScreen extends StatefulWidget {
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
   final List<Pet> pets = [
-  Pet(name: 'Fido', type: 'Dog', age: 3, description: 'Friendly dog'),
-  Pet(name: 'Whiskers', type: 'Cat', age: 2, description: 'Curious cat'),
-  Pet(name: 'Tweety', type: 'Bird', age: 1, description: 'Chirpy bird')
-];
+    Pet(name: 'Fido', type: 'Dog', age: 3, description: 'Friendly dog'),
+    Pet(name: 'Whiskers', type: 'Cat', age: 2, description: 'Curious cat'),
+    Pet(name: 'Tweety', type: 'Bird', age: 1, description: 'Chirpy bird')
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +59,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
               ],
             ),
             IconButton(
-              icon: const Icon(
-                size: 30, Icons.notifications),
+              icon: const Icon(size: 30, Icons.notifications),
               color: Colors.white,
               onPressed: () {
                 // Acción del botón de notificaciones
@@ -76,125 +76,135 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
         children: [
           Stack(
             clipBehavior: Clip.none,
-            
             children: [
               Container(
-                height: 150,
-                width: double.infinity,
-                //color: const Color(0xFF2BBCC5),
-                decoration: const BoxDecoration(
-                  color:  Color(0xFF2BBCC5),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(15),
-                    bottomRight: Radius.circular(15)
-                    )
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Text( "Emerson Quispe",
-                    style: GoogleFonts.workSans(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white
+                  height: 150,
+                  width: double.infinity,
+                  //color: const Color(0xFF2BBCC5),
+                  decoration: const BoxDecoration(
+                      color: Color(0xFF2BBCC5),
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                          bottomRight: Radius.circular(15))),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Text(
+                      "Emerson Quispe",
+                      style: GoogleFonts.workSans(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
                     ),
-                  ),
-                )
-
-              ),
+                  )),
               Positioned(
-                top: 50.0, // Posiciona la tarjeta en la parte superior del Container
+                top:
+                    50.0, // Posiciona la tarjeta en la parte superior del Container
                 left: 20.0, // Ajusta la posición horizontal
                 right: 20.0, // Ajusta la posición horizontal
                 child: Carousel(
                   pets: pets,
                 ),
-                
               )
             ],
           ),
-
           const SizedBox(height: 100),
           SizedBox(
-            height: 270,
-            child: Padding(
-            padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE3E6EC),
-                  borderRadius: BorderRadius.circular(15.0),
+              height: 270,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE3E6EC),
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: GridView.count(
+                    padding: const EdgeInsets.all(2.0),
+                    crossAxisCount: 3,
+                    children: <Widget>[
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const HeartRateScreen()));
+                          },
+                          child: const TabMetrics(
+                              icon: Icons.favorite, name: "Heart Rate")),
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ActivityPhysicsScreen()));
+                          },
+                          child: const TabMetrics(
+                              icon: Icons.fitness_center,
+                              name: "Activity Physics")),
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const TemperatureScreen()));
+                          },
+                          child: const TabMetrics(
+                              icon: Icons.thermostat, name: "Temperature")),
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SleepQualityScreen()));
+                          },
+                          child: const TabMetrics(
+                              icon: Icons.bedtime, name: "Sleep Quality")),
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const GpsScreen()));
+                          },
+                          child:
+                              const TabMetrics(icon: Icons.gps_fixed, name: "GPS")),
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const HydrationScreen()));
+                          },
+                          child: const TabMetrics(
+                              icon: Icons.water_drop, name: "Hydration")),
+                    ],
+                  ),
                 ),
-                child:GridView.count(
-                  padding: EdgeInsets.all(2.0),
-                  crossAxisCount: 3,
-                  children: <Widget>[
-                    InkWell(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HeartRateScreen()));
-                      },
-                      child: TabMetrics(icon: Icons.favorite, name: "Heart Rate")
-                    ),
-                    InkWell(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => ActivityPhysicsScreen()));
-                        },
-                        child: TabMetrics(icon: Icons.fitness_center, name: "Activity Physics")
-                    ),
-                    InkWell(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => TemperatureScreen()));
-                        },
-                        child: TabMetrics(icon: Icons.thermostat, name: "Temperature")
-                    ),
-                    InkWell(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SleepQualityScreen()));
-                        },
-                        child: TabMetrics(icon: Icons.bedtime, name: "Sleep Quality")
-                    ),
-                    InkWell(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => GpsScreen()));
-                        },
-                        child: TabMetrics(icon: Icons.gps_fixed, name: "GPS")
-                    ),
-                    InkWell(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => HydrationScreen()));
-                        },
-                        child: TabMetrics(icon: Icons.water_drop, name: "Hydration")
-                    ),
-                  ],
-                ),
-              ),
-            )
-          )
+              ))
         ],
       ),
     );
   }
 }
 
-class TabMetrics extends StatelessWidget{
+class TabMetrics extends StatelessWidget {
   final IconData icon;
   final String name;
 
-  TabMetrics({required this.icon, required this.name});
+  const TabMetrics({super.key, required this.icon, required this.name});
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15.0),
       ),
-      margin: EdgeInsets.all(5.0),
+      margin: const EdgeInsets.all(5.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(
-              icon,
-              size: 50.0,
-              color: const Color(0xFF2BBCC5)
-          ),
+          Icon(icon, size: 50.0, color: const Color(0xFF2BBCC5)),
           const SizedBox(height: 10.0),
           Text(
             name,
@@ -202,11 +212,9 @@ class TabMetrics extends StatelessWidget{
             style: const TextStyle(
                 fontSize: 16.0,
                 fontFamily: 'WorkSans',
-                color: Color(0xFF042440)
-            ),
+                color: Color(0xFF042440)),
           ),
         ],
-
       ),
     );
   }
@@ -221,68 +229,66 @@ class Carousel extends StatefulWidget {
 }
 
 class _CarouselState extends State<Carousel> {
-int selectedIndex = 0;
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         SizedBox(
-          height: 150,
-          width: double.infinity,
-          child: PageView.builder(
-            controller: PageController(viewportFraction: 0.8),
-            itemCount: widget.pets.length,
-            onPageChanged: (index){
-              setState(() {
-                selectedIndex = index;
-              });
-            },
-            itemBuilder: (context, index) {
-              return Card(
-                elevation: 10.0,
-                shape: RoundedRectangleBorder(
+            height: 150,
+            width: double.infinity,
+            child: PageView.builder(
+              controller: PageController(viewportFraction: 0.8),
+              itemCount: widget.pets.length,
+              onPageChanged: (index) {
+                setState(() {
+                  selectedIndex = index;
+                });
+              },
+              itemBuilder: (context, index) {
+                return Card(
+                  elevation: 10.0,
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.pets,
-                        size: 70,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(width: 60),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 40),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children:[ 
-                            Text(
-                              widget.pets[index].name,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              widget.pets[index].type,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                          ] 
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.pets,
+                          size: 70,
+                          color: Colors.black,
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 60),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 40),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  widget.pets[index].name,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  widget.pets[index].type,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                              ]),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
-          )
-        )
+                );
+              },
+            ))
         /*Container(
           decoration: BoxDecoration(
             color: const Color(0xFFE3E6EC),
@@ -353,7 +359,7 @@ class CardInfo extends StatelessWidget {
               size: 50,
               color: Colors.black,
             ),
-            SizedBox(width: 50),
+            const SizedBox(width: 50),
             Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -391,5 +397,9 @@ class Pet {
   //final Double perimeter;
   final String description;
 
-  Pet({required this.name, required this.type, required this.age, required this.description});
+  Pet(
+      {required this.name,
+      required this.type,
+      required this.age,
+      required this.description});
 }
