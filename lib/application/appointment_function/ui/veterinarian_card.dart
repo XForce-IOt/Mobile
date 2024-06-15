@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: sort_child_properties_last
+
 import 'package:flutter/material.dart';
 
 class VeterinarianCard extends StatelessWidget {
@@ -15,24 +16,23 @@ class VeterinarianCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: 100, maxWidth: 100),
+                  constraints:
+                      const BoxConstraints(maxHeight: 100, maxWidth: 100),
                   child: Image.network(
                       'https://images.pexels.com/photos/5733422/pexels-photo-5733422.jpeg?auto=compress&cs=tinysrgb&w=600',
                       fit: BoxFit.cover)),
-              Text("Nombre Apellido"),
+              const Text("Nombre Apellido"),
               ElevatedButton(
-                child: const Text("Select"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF2BBCC5),
-                  foregroundColor: Colors.white
-                ),
-                onPressed: () {
-                  debugPrint("oliii vet");
-                }
-              )
+                  child: const Text("Select"),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF2BBCC5),
+                      foregroundColor: Colors.white),
+                  onPressed: () {
+                    debugPrint("oliii vet");
+                  })
             ],
           ),
-          Column(
+          const Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
