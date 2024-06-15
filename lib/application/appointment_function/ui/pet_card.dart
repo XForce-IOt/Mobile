@@ -17,7 +17,8 @@ class PetCard extends StatelessWidget {
             children: <Widget>[
               ListTile(
                   leading: ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: 70, maxWidth: 70),
+                      constraints:
+                          const BoxConstraints(maxHeight: 70, maxWidth: 70),
                       child: Image.network(pet.image, fit: BoxFit.cover)),
                   title: Text(pet.name),
                   subtitle: Text(pet.specie))
