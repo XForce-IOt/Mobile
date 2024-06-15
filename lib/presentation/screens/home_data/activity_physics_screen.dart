@@ -17,16 +17,16 @@ class ActivityPhysicsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: customColor,
         elevation: 0,
-        title: Row(
+        title: const Row(
           children: [
-            const Icon(
+            Icon(
               Icons.person,
               color: Colors.white,
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8),
             Text(
               userName,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -48,10 +48,10 @@ class ActivityPhysicsScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
+      body: const Column(
         children: [
-          const PetCard(),
-          const Padding(
+          PetCard(),
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Align(
               alignment: Alignment.centerLeft,
@@ -68,15 +68,18 @@ class ActivityPhysicsScreen extends StatelessWidget {
             activityPercentage: activityPercentage,
             customColor: customColor,
           ),
-          const SingleChildScrollView(
+          SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
                 ElevatedButtonWidget(icon: Icons.favorite, label: 'Heart Rate'),
-                ElevatedButtonWidget(icon: Icons.thermostat, label: 'Temperature'),
-                ElevatedButtonWidget(icon: Icons.brightness_2, label: 'Sleep Quality'),
+                ElevatedButtonWidget(
+                    icon: Icons.thermostat, label: 'Temperature'),
+                ElevatedButtonWidget(
+                    icon: Icons.brightness_2, label: 'Sleep Quality'),
                 ElevatedButtonWidget(icon: Icons.gps_fixed, label: 'GPS'),
-                ElevatedButtonWidget(icon: Icons.local_drink, label: 'Hydration'),
+                ElevatedButtonWidget(
+                    icon: Icons.local_drink, label: 'Hydration'),
               ],
             ),
           ),
