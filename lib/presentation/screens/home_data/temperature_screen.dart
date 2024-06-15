@@ -14,16 +14,16 @@ class TemperatureScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: customColor,
         elevation: 0,
-        title: const Row(
+        title: Row(
           children: [
-            Icon(
+            const Icon(
               Icons.person,
               color: Colors.white,
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Text(
               userName,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -73,7 +73,7 @@ class TemperatureScreen extends StatelessWidget {
               border: Border.all(color: customColor),
               borderRadius: BorderRadius.circular(10.0),
             ),
-            child: const Center(
+            child: Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -82,7 +82,7 @@ class TemperatureScreen extends StatelessWidget {
                     size: 70,
                     color: customColor,
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Text(
                     '36.8°C',
                     style: TextStyle(

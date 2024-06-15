@@ -14,16 +14,16 @@ class HeartRateScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: customColor,
         elevation: 0,
-        title: const Row(
+        title: Row(
           children: [
-            Icon(
+            const Icon(
               Icons.person,
               color: Colors.white,
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Text(
               userName,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,

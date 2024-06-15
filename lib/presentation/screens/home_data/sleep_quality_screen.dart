@@ -15,16 +15,16 @@ class SleepQualityScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: customColor,
         elevation: 0,
-        title: const Row(
+        title: Row(
           children: [
-            Icon(
+            const Icon(
               Icons.person,
               color: Colors.white,
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Text(
               userName,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -86,9 +86,9 @@ class SleepQualityScreen extends StatelessWidget {
                     backgroundColor: Colors.grey[300],
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                     '$sleepPercentage Points',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,

@@ -17,16 +17,16 @@ class ActivityPhysicsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: customColor,
         elevation: 0,
-        title: const Row(
+        title: Row(
           children: [
-            Icon(
+            const Icon(
               Icons.person,
               color: Colors.white,
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Text(
               userName,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -48,10 +48,10 @@ class ActivityPhysicsScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const Column(
+      body: Column(
         children: [
-          PetCard(),
-          Padding(
+          const PetCard(),
+          const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Align(
               alignment: Alignment.centerLeft,
@@ -68,7 +68,7 @@ class ActivityPhysicsScreen extends StatelessWidget {
             activityPercentage: activityPercentage,
             customColor: customColor,
           ),
-          SingleChildScrollView(
+          const SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
