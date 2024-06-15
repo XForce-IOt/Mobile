@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: avoid_print, sort_child_properties_last
+
 import 'package:flutter/material.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
@@ -75,7 +76,7 @@ class _CreateAppointmentDataState extends State<CreateAppointmentData> {
                   showDatePicker();
                 },
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF2BBCC5),
+                    backgroundColor: const Color(0xFF2BBCC5),
                     foregroundColor: Colors.white),
                 child: const Text("Select here!")),
             const SizedBox(height: 20),
@@ -109,7 +110,7 @@ class _CreateAppointmentDataState extends State<CreateAppointmentData> {
             ElevatedButton(
                 child: const Text("Create appointment"),
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF2BBCC5),
+                    backgroundColor: const Color(0xFF2BBCC5),
                     foregroundColor: Colors.white),
                 onPressed: () {
                   debugPrint("new appointment $selectDateTime");
