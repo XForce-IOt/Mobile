@@ -12,7 +12,12 @@ class NavBarRoots extends StatefulWidget {
 class _NavBarRootsState extends State<NavBarRoots> {
   int _selectedIndex = 0;
 
-  final _screens = [const HomeScreen(), Container(), ProfileScreen(), Container()];
+  final _screens = [
+    const HomeScreen(),
+    Container(),
+    const ProfileScreen(),
+    Container()
+  ];
 
   @override
   Widget build(BuildContext context) {
