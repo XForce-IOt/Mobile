@@ -25,8 +25,8 @@ class PetsBloc extends Bloc<PetsEvent, PetsState> {
       List result = jsonDecode(response.body);
 
       for (var i = 0; i < result.length; i++) {
-        PetAppointmentModel pet = PetAppointmentModel.fromJson(
-            result[i] as Map<String, dynamic>);
+        PetAppointmentModel pet =
+            PetAppointmentModel.fromJson(result[i] as Map<String, dynamic>);
         pets.add(pet);
       }
       print(pets);
