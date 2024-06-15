@@ -15,16 +15,16 @@ class SleepQualityScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: customColor,
         elevation: 0,
-        title: Row(
+        title: const Row(
           children: [
-            const Icon(
+            Icon(
               Icons.person,
               color: Colors.white,
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8),
             Text(
               userName,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -81,13 +81,14 @@ class SleepQualityScreen extends StatelessWidget {
                   CircularProgressIndicator(
                     value: sleepPercentage / 100,
                     strokeWidth: 10,
-                    valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+                    valueColor:
+                        const AlwaysStoppedAnimation<Color>(Colors.blue),
                     backgroundColor: Colors.grey[300],
                   ),
                   const SizedBox(height: 8),
-                  Text(
+                  const Text(
                     '$sleepPercentage Points',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -102,10 +103,13 @@ class SleepQualityScreen extends StatelessWidget {
             child: Row(
               children: [
                 ElevatedButtonWidget(icon: Icons.favorite, label: 'Heart Rate'),
-                ElevatedButtonWidget(icon: Icons.directions_run, label: 'Activity Physics'),
-                ElevatedButtonWidget(icon: Icons.thermostat, label: 'Temperature'),
+                ElevatedButtonWidget(
+                    icon: Icons.directions_run, label: 'Activity Physics'),
+                ElevatedButtonWidget(
+                    icon: Icons.thermostat, label: 'Temperature'),
                 ElevatedButtonWidget(icon: Icons.gps_fixed, label: 'GPS'),
-                ElevatedButtonWidget(icon: Icons.local_drink, label: 'Hydration'),
+                ElevatedButtonWidget(
+                    icon: Icons.local_drink, label: 'Hydration'),
               ],
             ),
           ),
