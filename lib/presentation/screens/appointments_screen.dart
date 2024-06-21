@@ -48,7 +48,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   listener: (context, state) {},
                   builder: (context, state) {
                     switch (state.runtimeType) {
-                      case PetsFetchingSuccesfulState _:
+                      case PetsFetchingSuccesfulState: //no tocar
                         final successState =
                             state as PetsFetchingSuccesfulState;
                         return HorizontalListPetCards(
