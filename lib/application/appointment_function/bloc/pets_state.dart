@@ -8,9 +8,9 @@ abstract class PetsActionState extends PetsState {}
 
 class PetsInitial extends PetsState {}
 
-//class PetsFetchingLoadingState extends PetsState {}
+class PetsFetchingLoadingState extends PetsState {}
 
-//class PetsFetchingErrorState extends PetsState {}
+class PetsFetchingErrorState extends PetsState {}
 
 class PetsFetchingSuccesfulState extends PetsState {
   final List<PetAppointmentModel> pets;

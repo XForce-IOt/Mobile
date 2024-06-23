@@ -30,10 +30,7 @@ class _HorizontalListPetCardsState extends State<HorizontalListPetCards> {
         itemBuilder: (context, index) {
           final pet = pets[index];
           return PetCard(pet: pet);
-        },
-        //agregar un builder para la lista dinámica después, el espaciado se agrega ahí >:D
-
-        //children: [PetCard(), PetCard(), PetCard(), PetCard()],
+        }
       ),
     );
   }

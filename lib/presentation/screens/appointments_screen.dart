@@ -14,6 +14,9 @@ class AppointmentScreen extends StatefulWidget {
 }
 
 class _AppointmentScreenState extends State<AppointmentScreen> {
+  int currentStep = 0;
+  bool get isFirstStep => currentStep == 0;
+  bool get isLastStep => currentStep == stepsToCreateAppointment().length - 1;
   final PetsBloc petsBloc = PetsBloc();
 
   @override
@@ -48,13 +51,14 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   listener: (context, state) {},
                   builder: (context, state) {
                     switch (state.runtimeType) {
+                      case PetsFetchingLoadingState:
+                        return const CircularProgressIndicator();
                       case PetsFetchingSuccesfulState: //no tocar
                         final successState =
                             state as PetsFetchingSuccesfulState;
                         return HorizontalListPetCards(
                             pets: successState
                                 .pets); //Lista de mascotas horizontal mascota de la que pertenecen los datos - cambiar por overlay
-
                       default:
                         return const CircularProgressIndicator();
                     }
@@ -63,11 +67,55 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               ],
             ),
           ),
-          const Expanded(
-              child: //VerticalList()
-                  CreateAppointmentData())
+          Expanded(
+              child: Stepper(
+            steps: stepsToCreateAppointment(),
+            currentStep: currentStep,
+            onStepContinue: () {
+              if (isLastStep) {
+              } else {
+                setState(() {
+                  currentStep += 1;
+                });
+              }
+            },
+            onStepCancel: 
+            isFirstStep ? null: ()=> setState(() {
+              currentStep -=1;
+            }),
+            onStepTapped: (step)=> setState(() {
+              currentStep = step;
+            }),
+          ))
         ],
       ),
     );
   }
+
+
+List<Step> stepsToCreateAppointment() => [
+      Step(
+        isActive: currentStep >=0,
+        title: const Text('Select a Clinic'), 
+        content: 
+        Column()
+        //Text('')
+        ),
+      Step(
+        isActive: currentStep >=1,
+        title: const Text('Select a Veterinarian'), 
+        content: 
+        Text('')
+        ),
+      Step(
+        isActive: currentStep >=2,
+        title: const Text('Add a description'), 
+        content: 
+        //Text('')
+        CreateAppointmentData()
+        )
+    ];
+
+
 }
+
