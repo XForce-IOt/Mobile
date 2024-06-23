@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:movil/application/appointment_function/bloc/clinics_bloc.dart';
+import 'package:movil/application/appointment_function/bloc/clinics_event.dart';
+import 'package:movil/application/appointment_function/bloc/clinics_state.dart';
 import 'package:movil/application/appointment_function/bloc/pets_bloc.dart';
 import 'package:movil/application/appointment_function/bloc/pets_event.dart';
 import 'package:movil/application/appointment_function/bloc/pets_state.dart';
 import 'package:movil/application/appointment_function/ui/create_appontment.dart';
 import 'package:movil/application/appointment_function/ui/horizontal_list_petcards.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movil/application/appointment_function/ui/vertical_list_clinics.dart';
 
 class AppointmentScreen extends StatefulWidget {
   const AppointmentScreen({super.key});
@@ -18,10 +22,12 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   bool get isFirstStep => currentStep == 0;
   bool get isLastStep => currentStep == stepsToCreateAppointment().length - 1;
   final PetsBloc petsBloc = PetsBloc();
+  final ClinicsBloc clinicsBloc = ClinicsBloc();
 
   @override
   void initState() {
     petsBloc.add(PetsInitialFetchEvent());
+    clinicsBloc.add(ClinicsInitialFetchEvent()); //inicia siempre
     super.initState();
   }
 
@@ -79,11 +85,12 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 });
               }
             },
-            onStepCancel: 
-            isFirstStep ? null: ()=> setState(() {
-              currentStep -=1;
-            }),
-            onStepTapped: (step)=> setState(() {
+            onStepCancel: isFirstStep
+                ? null
+                : () => setState(() {
+                      currentStep -= 1;
+                    }),
+            onStepTapped: (step) => setState(() {
               currentStep = step;
             }),
           ))
@@ -92,30 +99,36 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     );
   }
 
-
-List<Step> stepsToCreateAppointment() => [
-      Step(
-        isActive: currentStep >=0,
-        title: const Text('Select a Clinic'), 
-        content: 
-        Column()
-        //Text('')
-        ),
-      Step(
-        isActive: currentStep >=1,
-        title: const Text('Select a Veterinarian'), 
-        content: 
-        Text('')
-        ),
-      Step(
-        isActive: currentStep >=2,
-        title: const Text('Add a description'), 
-        content: 
-        //Text('')
-        CreateAppointmentData()
-        )
-    ];
-
-
+  List<Step> stepsToCreateAppointment() => [
+        Step(
+            isActive: currentStep >= 0,
+            title: const Text('Select a Clinic'),
+            content: BlocConsumer<ClinicsBloc, ClinicsState>(
+              bloc: clinicsBloc,
+              listenWhen: (previous, current) => current is ClinicsActionState,
+              buildWhen: (previous, current) => current is! ClinicsActionState,
+              listener: (context, state) {},
+              builder: (context, state) {
+                switch (state.runtimeType) {
+                  case ClinicsFetchingLoadingState:
+                    return const CircularProgressIndicator();
+                  case ClinicsFetchingSuccesfulState:
+                    final successState = state as ClinicsFetchingSuccesfulState;
+                    return VerticalListClinics(clinics: successState.clinics);
+                  default:
+                    return const CircularProgressIndicator();
+                }
+              },
+            )),
+        Step(
+            isActive: currentStep >= 1,
+            title: const Text('Select a Veterinarian'),
+            content: Text('')),
+        Step(
+            isActive: currentStep >= 2,
+            title: const Text('Add a description'),
+            content:
+                //Text('')
+                CreateAppointmentData())
+      ];
 }
-

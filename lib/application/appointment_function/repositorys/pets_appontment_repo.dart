@@ -4,8 +4,7 @@ import 'dart:developer';
 import 'package:movil/application/appointment_function/mappers/pet_appointment_model.dart';
 import 'package:http/http.dart' as http;
 
-class PetsAppontmentRepo{
-
+class PetsAppontmentRepo {
   static Future<List<PetAppointmentModel>> fetchPets() async {
     var client = http.Client();
     List<PetAppointmentModel> pets = [];
@@ -23,11 +22,9 @@ class PetsAppontmentRepo{
       }
       //print(pets);
       return pets;
-
+    } catch (e) {
+      log(e.toString());
+      return [];
+    }
   }
-  catch(e){
-    log(e.toString());
-    return [];
-  }
-}
 }
