@@ -1,9 +1,42 @@
-// ignore_for_file: sort_child_properties_last
-
 import 'package:flutter/material.dart';
 
+import '../mappers/veterinarian_model.dart';
+
+class VerticalListVets extends StatefulWidget {
+  final List<VeterinarianModel> vets;
+  const VerticalListVets({super.key, required this.vets});
+
+  @override
+  State<VerticalListVets> createState() => _VerticalListVetsState();
+}
+
+class _VerticalListVetsState extends State<VerticalListVets> {
+  late List<VeterinarianModel> vets;
+
+  @override
+  void initState() {
+    super.initState();
+    vets = widget.vets;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 200,
+      child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: vets.length,
+          itemBuilder: (context, index) {
+            final vet = vets[index];
+            return (VeterinarianCard(vet: vet));
+          }),
+    );
+  }
+}
+
 class VeterinarianCard extends StatelessWidget {
-  const VeterinarianCard({super.key});
+  final VeterinarianModel vet;
+  const VeterinarianCard({super.key, required this.vet});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +54,7 @@ class VeterinarianCard extends StatelessWidget {
                   child: Image.network(
                       'https://images.pexels.com/photos/5733422/pexels-photo-5733422.jpeg?auto=compress&cs=tinysrgb&w=600',
                       fit: BoxFit.cover)),
-              const Text("Nombre Apellido"),
+              Text(vet.fullName),
               ElevatedButton(
                   child: const Text("Select"),
                   style: ElevatedButton.styleFrom(
@@ -32,14 +65,14 @@ class VeterinarianCard extends StatelessWidget {
                   })
             ],
           ),
-          const Column(
+          Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Text("Availability: M - M - F"),
-              Text("Hours: 10 AM - 1 PM / 2:30 PM - 7:PM"),
-              Text("Mail: omarramos@gmail.com"),
-              Text("Whatsapp: 989666666")
+              const Text("Availability: M - M - F"),
+              const Text("Hours: 10 AM - 1 PM / 2:30 PM - 7:PM"),
+              Text(vet.specialization),
+              Text(vet.contactInfo)
             ],
           )
         ],

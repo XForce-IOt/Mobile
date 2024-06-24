@@ -5,10 +5,14 @@ import 'package:movil/application/appointment_function/bloc/clinics_state.dart';
 import 'package:movil/application/appointment_function/bloc/pets_bloc.dart';
 import 'package:movil/application/appointment_function/bloc/pets_event.dart';
 import 'package:movil/application/appointment_function/bloc/pets_state.dart';
+import 'package:movil/application/appointment_function/bloc/vets_bloc.dart';
+import 'package:movil/application/appointment_function/bloc/vets_event.dart';
+import 'package:movil/application/appointment_function/bloc/vets_state.dart';
 import 'package:movil/application/appointment_function/ui/create_appontment.dart';
 import 'package:movil/application/appointment_function/ui/horizontal_list_petcards.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movil/application/appointment_function/ui/vertical_list_clinics.dart';
+import 'package:movil/application/appointment_function/ui/vertical_list_vets.dart';
 
 class AppointmentScreen extends StatefulWidget {
   const AppointmentScreen({super.key});
@@ -23,11 +27,13 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   bool get isLastStep => currentStep == stepsToCreateAppointment().length - 1;
   final PetsBloc petsBloc = PetsBloc();
   final ClinicsBloc clinicsBloc = ClinicsBloc();
+  final VetsBloc vetsBloc = VetsBloc();
 
   @override
   void initState() {
     petsBloc.add(PetsInitialFetchEvent());
     clinicsBloc.add(ClinicsInitialFetchEvent()); //inicia siempre
+    vetsBloc.add(VetsInitialFetchEvent()); //agrega el id de la clinica, mover init al stepper
     super.initState();
   }
 
@@ -123,7 +129,24 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
         Step(
             isActive: currentStep >= 1,
             title: const Text('Select a Veterinarian'),
-            content: Text('')),
+            content: BlocConsumer<VetsBloc, VetsState>(
+              bloc: vetsBloc,
+              listenWhen: (previous, current) => current is VetsActionState,
+              buildWhen: (previous, current) => current is! VetsActionState,
+              listener: (context, state) {},
+              builder: (context, state) {
+                switch (state.runtimeType) {
+                  case VetsFetchingLoadingState:
+                    return const CircularProgressIndicator();
+                  case VetsFetchingSuccessfulState:
+                    final successState = state as VetsFetchingSuccessfulState;
+                    return VerticalListVets(vets: successState.vets);
+                  default:
+                    return const CircularProgressIndicator();
+                }
+              },
+            )
+            ),
         Step(
             isActive: currentStep >= 2,
             title: const Text('Add a description'),
