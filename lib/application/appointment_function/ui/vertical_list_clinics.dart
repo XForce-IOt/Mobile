@@ -1,8 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
+import 'package:movil/application/appointment_function/mappers/clinic_model.dart';
+
+class VerticalListClinics extends StatefulWidget {
+  final List<ClinicModel> clinics;
+
+  const VerticalListClinics({super.key, required this.clinics});
+
+  @override
+  State<VerticalListClinics> createState() => _VerticalListClinicsState();
+}
+
+class _VerticalListClinicsState extends State<VerticalListClinics> {
+  late List<ClinicModel> clinics;
+
+  @override
+  void initState() {
+    super.initState();
+    clinics = widget.clinics;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 200,
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: clinics.length,
+        itemBuilder: (context, index) {
+          final clinic = clinics[index];
+          return ClinicCard(clinic: clinic);
+        },
+      ),
+    );
+  }
+}
 
 class ClinicCard extends StatelessWidget {
-  const ClinicCard({super.key});
+  final ClinicModel clinic;
+  const ClinicCard({super.key, required this.clinic});
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +62,10 @@ class ClinicCard extends StatelessWidget {
                       child: Image.network(
                           'https://images.pexels.com/photos/5733422/pexels-photo-5733422.jpeg?auto=compress&cs=tinysrgb&w=600',
                           fit: BoxFit.cover)),
-                  title: const Text("Dulces patitas titulo"),
-                  subtitle: const RatingStars(
+                  title: Text(clinic.name),
+                  subtitle: RatingStars(
                     axis: Axis.horizontal,
-                    value: 4.5,
+                    value: clinic.rating,
                     starCount: 5,
                     starSize: 20,
                     valueLabelColor: Colors.amber,
@@ -37,12 +73,12 @@ class ClinicCard extends StatelessWidget {
                   ),
                 ),
                 const Text("Dirección larga"),
-                const Wrap(
+                Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [Icon(Icons.phone), Text("999999999")]),
-                const Wrap(
+                    children: [const Icon(Icons.phone), Text(clinic.number)]),
+                Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [Icon(Icons.facebook), Text("Dulces patitas")])
+                    children: [const Icon(Icons.facebook), Text(clinic.socialMedia)])
               ],
             ),
           ),

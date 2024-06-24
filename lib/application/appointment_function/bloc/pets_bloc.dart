@@ -1,13 +1,12 @@
 // ignore_for_file: avoid_print
 
 import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 import 'package:movil/application/appointment_function/bloc/pets_event.dart';
 import 'package:bloc/bloc.dart';
 import 'package:movil/application/appointment_function/bloc/pets_state.dart';
 import 'package:movil/application/appointment_function/mappers/pet_appointment_model.dart';
+import 'package:movil/application/appointment_function/repositorys/pets_appontment_repo.dart';
 
 class PetsBloc extends Bloc<PetsEvent, PetsState> {
   PetsBloc() : super(PetsInitial()) {
@@ -16,24 +15,9 @@ class PetsBloc extends Bloc<PetsEvent, PetsState> {
 
   FutureOr<void> petsInitialFetchEvent(
       PetsInitialFetchEvent event, Emitter<dynamic> emit) async {
-    var client = http.Client();
-    List<PetAppointmentModel> pets = [];
-    try {
-      var response = await client.get(Uri.parse(
-          'https://backend-production-6ed3.up.railway.app/api/pethealth/v1/pet-owners/1/pets'));
+    emit(PetsFetchingLoadingState());
+    List<PetAppointmentModel> pets = await PetsAppontmentRepo.fetchPets();
 
-      List result = jsonDecode(response.body);
-
-      for (var i = 0; i < result.length; i++) {
-        PetAppointmentModel pet =
-            PetAppointmentModel.fromJson(result[i] as Map<String, dynamic>);
-        pets.add(pet);
-      }
-      print(pets);
-
-      emit(PetsFetchingSuccesfulState(pets: pets));
-    } catch (e) {
-      print(e.toString());
-    }
+    emit(PetsFetchingSuccesfulState(pets: pets));
   }
 }
