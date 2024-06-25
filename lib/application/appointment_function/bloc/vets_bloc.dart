@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movil/application/appointment_function/bloc/vets_event.dart';
 import 'package:movil/application/appointment_function/bloc/vets_state.dart';
+import 'package:movil/application/appointment_function/mappers/veterinarian_model.dart';
 import 'package:movil/application/appointment_function/repositorys/veterinarians_repo.dart';
 
-import '../mappers/veterinarian_model.dart';
 
 class VetsBloc extends Bloc<VetsEvent, VetsState> {
   VetsBloc() : super(VetsInitial()) {
