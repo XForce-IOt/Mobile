@@ -8,6 +8,7 @@ import 'package:movil/application/appointment_function/bloc/pets_state.dart';
 import 'package:movil/application/appointment_function/bloc/vets_bloc.dart';
 import 'package:movil/application/appointment_function/bloc/vets_event.dart';
 import 'package:movil/application/appointment_function/bloc/vets_state.dart';
+import 'package:movil/application/appointment_function/ui/appointment_list.dart';
 import 'package:movil/application/appointment_function/ui/create_appontment.dart';
 import 'package:movil/application/appointment_function/ui/horizontal_list_petcards.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -79,7 +80,22 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               ],
             ),
           ),
-          Expanded(
+          DefaultTabController(
+            length: 2, 
+            child: Expanded(
+              child: Scaffold(
+                appBar: AppBar(
+                  automaticallyImplyLeading: false, // Oculta la flecha de retroceso
+                  toolbarHeight: 0, //Oculta titulo
+                  bottom: const TabBar(
+                    tabs: [
+                      Tab(text: 'Your appointments'), 
+                      Tab(text: 'Add appointment')
+                  ]), 
+                ),
+                body: TabBarView(children: [
+                  AppointmentsList(),
+                  Expanded(
               child: Stepper(
             steps: stepsToCreateAppointment(),
             currentStep: currentStep,
@@ -100,6 +116,9 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               currentStep = step;
             }),
           ))
+                ],),
+                ),
+            ))
         ],
       ),
     );
@@ -155,3 +174,4 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 CreateAppointmentData())
       ];
 }
+
