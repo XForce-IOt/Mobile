@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movil/presentation/screens/login_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:movil/shared/services/auth_service.dart';
+import 'login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -10,8 +12,56 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   bool passToggle = true;
+  final _nameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _phoneController = TextEditingController();
+  bool _isLoading = false;
 
-  String? selectedRole;
+  void _submit() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await Provider.of<AuthService>(context, listen: false).signup(
+        _nameController.text,
+        _lastNameController.text,
+        _emailController.text,
+        _passwordController.text,
+        _phoneController.text,
+      );
+      Navigator.of(context).pushReplacementNamed('/login');
+    } on HttpException catch (error) {
+      _showErrorDialog(error.toString());
+    } catch (error) {
+      _showErrorDialog(
+          'Error desconocido. Por favor intenta de nuevo más tarde.');
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Error'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Ok'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: TextField(
+                          controller: _nameController,
                           decoration: InputDecoration(
                             label: const Text('Name'),
                             hintStyle:
@@ -63,6 +114,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: TextField(
+                          controller: _lastNameController,
                           decoration: InputDecoration(
                             label: const Text('Full Name'),
                             hintStyle:
@@ -77,6 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: TextField(
+                          controller: _emailController,
                           decoration: InputDecoration(
                             label: const Text('Email'),
                             hintStyle:
@@ -91,6 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: TextField(
+                          controller: _phoneController,
                           decoration: InputDecoration(
                             label: const Text('Phone'),
                             hintStyle:
@@ -104,32 +158,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: DropdownButtonFormField<String>(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            labelText: 'Select Role',
-                            hintText: 'Choose your role',
-                          ),
-                          value: selectedRole,
-                          items: <String>['Veterinarian', 'Pet Owner']
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedRole = newValue!;
-                            });
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
                         child: TextField(
+                          controller: _passwordController,
                           obscureText: passToggle,
                           decoration: InputDecoration(
                             label: const Text('Password'),
@@ -160,7 +190,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             color: const Color(0xFF2BBCC5),
                             borderRadius: BorderRadius.circular(10),
                             child: InkWell(
-                              onTap: () {},
+                              onTap: _submit,
                               child: const Center(
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(

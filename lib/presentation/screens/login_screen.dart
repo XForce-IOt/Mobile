@@ -1,8 +1,6 @@
-// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
-
 import 'package:flutter/material.dart';
-import 'package:movil/shared/services/auth_service.dart';
 import 'package:provider/provider.dart';
+import 'package:movil/shared/services/auth_service.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -27,27 +25,34 @@ class _LoginScreenState extends State<LoginScreen> {
       await Provider.of<AuthService>(context, listen: false)
           .login(_emailController.text, _passwordController.text);
       Navigator.of(context).pushReplacementNamed('/home');
+    } on HttpException catch (error) {
+      _showErrorDialog(error.toString());
     } catch (error) {
-      showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: const Text('Error'),
-          content: const Text('Usuario o contraseña incorrectos'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Ok'),
-              onPressed: () {
-                Navigator.of(ctx).pop();
-              },
-            )
-          ],
-        ),
-      );
+      _showErrorDialog(
+          'Error desconocido. Por favor intenta de nuevo más tarde.');
     }
 
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Error'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Ok'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      ),
+    );
   }
 
   @override
