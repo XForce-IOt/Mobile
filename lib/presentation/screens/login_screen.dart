@@ -1,16 +1,54 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
-import 'package:movil/presentation/screens/signup_screen.dart';
+import 'package:movil/shared/services/auth_service.dart';
+import 'package:provider/provider.dart';
+import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
   bool passToggle = true;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  void _submit() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await Provider.of<AuthService>(context, listen: false)
+          .login(_emailController.text, _passwordController.text);
+      Navigator.of(context).pushReplacementNamed('/home');
+    } catch (error) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Usuario o contraseña incorrectos'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+            )
+          ],
+        ),
+      );
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +95,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: TextField(
+                          controller: _emailController,
                           decoration: InputDecoration(
-                            label: const Text('Username'),
+                            label: const Text('Email'),
                             hintStyle:
                                 const TextStyle(color: Color(0xFF042440)),
                             prefixIcon: const Icon(Icons.person),
@@ -71,6 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: TextField(
+                          controller: _passwordController,
                           obscureText: passToggle,
                           decoration: InputDecoration(
                             label: const Text('Password'),
@@ -119,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: const Color(0xFF2BBCC5),
                             borderRadius: BorderRadius.circular(10),
                             child: InkWell(
-                              onTap: () {},
+                              onTap: _submit,
                               child: const Center(
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(
