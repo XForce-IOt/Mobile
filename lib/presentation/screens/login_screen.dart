@@ -1,6 +1,8 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:movil/shared/services/auth_service.dart';
+import 'package:provider/provider.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,7 +26,8 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await Provider.of<AuthService>(context, listen: false)
           .login(_emailController.text, _passwordController.text);
-      Navigator.of(context).pushReplacementNamed('/home');
+      Navigator.of(context)
+          .pushReplacementNamed('/navbar'); // Redirige a NavBarRoots
     } on HttpException catch (error) {
       _showErrorDialog(error.toString());
     } catch (error) {
