@@ -6,7 +6,7 @@ import 'package:movil/presentation/screens/profile_screen.dart';
 import 'package:movil/presentation/screens/settings_screen.dart';
 
 class NavBarRoots extends StatefulWidget {
-  final User? user;
+  final User user;
 
   const NavBarRoots({super.key, required this.user});
 
@@ -17,23 +17,21 @@ class NavBarRoots extends StatefulWidget {
 class _NavBarRootsState extends State<NavBarRoots> {
   int _selectedIndex = 0;
 
-  final _screens = [
-    const HomeScreen(),
-    const AppointmentScreen(),
-    const ProfileScreen(),
-    const SettingsScreen(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<Widget> screens = [
+      HomeScreen(user: widget.user),
+      const AppointmentScreen(),
+      const ProfileScreen(),
+      const SettingsScreen(),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF2BBCC5),
-        title: Text(widget.user != null
-            ? '${widget.user!.name} ${widget.user!.lastName}'
-            : 'Welcome'),
+        title: Text('${widget.user.name} ${widget.user.lastName}'),
       ),
-      body: _screens[_selectedIndex],
+      body: screens[_selectedIndex],
       bottomNavigationBar: SizedBox(
         height: 80,
         child: BottomNavigationBar(

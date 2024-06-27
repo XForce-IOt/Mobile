@@ -2,22 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:movil/shared/model/user_model.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final User user;
+
+  const HomeScreen({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Home',
       debugShowCheckedModeBanner: false,
-      home: MyHomeScreen(),
+      home: MyHomeScreen(user: user),
     );
   }
 }
 
 class MyHomeScreen extends StatefulWidget {
-  const MyHomeScreen({super.key});
+  final User user;
+
+  const MyHomeScreen({super.key, required this.user});
 
   @override
   State<MyHomeScreen> createState() => _MyHomeScreenState();
@@ -95,7 +100,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 15),
                     child: Text(
-                      "Emerson Quispe",
+                      "${widget.user.name} ${widget.user.lastName}",
                       style: GoogleFonts.workSans(
                           fontSize: 25,
                           fontWeight: FontWeight.w500,
