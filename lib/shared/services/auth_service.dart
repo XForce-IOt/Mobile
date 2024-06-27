@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movil/shared/model/user_model.dart';
 
 class AuthService with ChangeNotifier {
@@ -10,9 +9,12 @@ class AuthService with ChangeNotifier {
 
   User? get user => _user;
 
+  final String baseUrl =
+      'https://backend-production-6ed3.up.railway.app/api/pet-health/v1';
+
   Future<void> login(String email, String password) async {
     final hashedPassword = sha256.convert(utf8.encode(password)).toString();
-    final url = '${dotenv.env['BASE_URL']}/login';
+    final url = '$baseUrl/login';
 
     try {
       final response = await http.post(
@@ -39,7 +41,7 @@ class AuthService with ChangeNotifier {
   Future<void> signup(String name, String lastname, String email,
       String password, String address, String phone) async {
     final hashedPassword = sha256.convert(utf8.encode(password)).toString();
-    final url = '${dotenv.env['BASE_URL']}/signup';
+    final url = '$baseUrl/signup';
 
     try {
       final response = await http.post(
