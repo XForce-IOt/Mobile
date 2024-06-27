@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:movil/application/appointment_function/bloc/appointments_event.dart';
+import 'package:movil/application/appointment_function/bloc/appointments_state.dart';
 import 'package:movil/application/appointment_function/bloc/clinics_bloc.dart';
 import 'package:movil/application/appointment_function/bloc/clinics_event.dart';
 import 'package:movil/application/appointment_function/bloc/clinics_state.dart';
@@ -15,6 +17,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movil/application/appointment_function/ui/vertical_list_clinics.dart';
 import 'package:movil/application/appointment_function/ui/vertical_list_vets.dart';
 
+import '../../application/appointment_function/bloc/appointments_bloc.dart';
+
 class AppointmentScreen extends StatefulWidget {
   const AppointmentScreen({super.key});
 
@@ -29,12 +33,14 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   final PetsBloc petsBloc = PetsBloc();
   final ClinicsBloc clinicsBloc = ClinicsBloc();
   final VetsBloc vetsBloc = VetsBloc();
+  final AppointmentsBloc appointmentsBloc = AppointmentsBloc();
 
   @override
   void initState() {
     petsBloc.add(PetsInitialFetchEvent());
     clinicsBloc.add(ClinicsInitialFetchEvent()); //inicia siempre
     vetsBloc.add(VetsInitialFetchEvent()); //agrega el id de la clinica, mover init al stepper
+    appointmentsBloc.add(AppointmentsInitialFetchEvent());
     super.initState();
   }
 
@@ -94,7 +100,24 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   ]), 
                 ),
                 body: TabBarView(children: [
-                  AppointmentsList(),
+                  BlocConsumer<AppointmentsBloc, AppointmentsState>(
+                    bloc: appointmentsBloc,
+                    listenWhen: (previous, current) => current is AppointmentsActionState,
+                    buildWhen: (previous, current) => current is! AppointmentsActionState,
+                    listener: (context, state) {},
+                    builder: (context, state) {
+                      switch (state.runtimeType) {
+                        case AppointmentsFetchingLoadingState:
+                          return const CircularProgressIndicator();
+                        case AppointmentsFetchingSuccesfulState:
+                          final successState =
+                              state as AppointmentsFetchingSuccesfulState;
+                          return AppointmentList(appointments: successState.appointments);
+                        default:
+                          return const CircularProgressIndicator();
+                      }
+                    },
+                  ),
                   Expanded(
               child: Stepper(
             steps: stepsToCreateAppointment(),
