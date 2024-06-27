@@ -12,7 +12,7 @@ class AuthService with ChangeNotifier {
   User? get user => _user;
 
   final String baseUrl =
-      'https://backend-production-6ed3.up.railway.app/api/pet-health/v1';
+      'https://backend-production-6ed3.up.railway.app/api/pet-health/v1/pet-owners';
 
   Future<void> login(String email, String password) async {
     final hashedPassword = sha256.convert(utf8.encode(password)).toString();
