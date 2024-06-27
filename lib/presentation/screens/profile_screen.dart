@@ -1,9 +1,12 @@
-// ignore_for_file: avoid_print, prefer_const_declarations
+// ignore_for_file: avoid_print, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:movil/shared/model/user_model.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  final User user;
+
+  const ProfileScreen({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -13,26 +16,37 @@ class ProfileScreen extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyProfileScreen(),
+      home: MyProfileScreen(user: user),
     );
   }
 }
 
 class MyProfileScreen extends StatefulWidget {
-  const MyProfileScreen({super.key});
+  final User user;
+
+  const MyProfileScreen({super.key, required this.user});
 
   @override
-  // ignore: library_private_types_in_public_api
   _MyProfileScreenState createState() => _MyProfileScreenState();
 }
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
   final _formKey = GlobalKey<FormState>();
-  String _name = '';
-  String _lastName = '';
-  String _address = '';
-  String _phone = '';
-  String _email = '';
+  late String _name;
+  late String _lastName;
+  late String _address;
+  late String _phone;
+  late String _email;
+
+  @override
+  void initState() {
+    super.initState();
+    _name = widget.user.name;
+    _lastName = widget.user.lastName;
+    _address = widget.user.address;
+    _phone = widget.user.phone;
+    _email = widget.user.email;
+  }
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
@@ -50,7 +64,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Color customColor = const Color(0xFF2BBCC5);
+    const Color customColor = Color(0xFF2BBCC5);
     return Scaffold(
       appBar: AppBar(
         title: Container(
@@ -76,7 +90,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(
+                const Icon(
                   Icons.person,
                   size: 100,
                   color: customColor,
@@ -94,6 +108,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 SizedBox(
                   width: 250,
                   child: TextFormField(
+                    initialValue: _name,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Name',
@@ -113,6 +128,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 SizedBox(
                   width: 250,
                   child: TextFormField(
+                    initialValue: _lastName,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Last Name',
@@ -132,6 +148,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 SizedBox(
                   width: 250,
                   child: TextFormField(
+                    initialValue: _address,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Address',
@@ -151,6 +168,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 SizedBox(
                   width: 250,
                   child: TextFormField(
+                    initialValue: _phone,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Phone',
@@ -170,6 +188,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 SizedBox(
                   width: 250,
                   child: TextFormField(
+                    initialValue: _email,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Email',

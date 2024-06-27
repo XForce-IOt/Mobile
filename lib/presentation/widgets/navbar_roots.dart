@@ -22,7 +22,7 @@ class _NavBarRootsState extends State<NavBarRoots> {
     final List<Widget> screens = [
       HomeScreen(user: widget.user),
       const AppointmentScreen(),
-      const ProfileScreen(),
+      ProfileScreen(user: widget.user),
       const SettingsScreen(),
     ];
 
