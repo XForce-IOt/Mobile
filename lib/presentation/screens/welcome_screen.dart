@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movil/presentation/screens/login_screen.dart';
 import 'package:movil/presentation/screens/signup_screen.dart';
 import 'package:movil/presentation/widgets/navbar_roots.dart';
+import 'package:movil/shared/model/user_model.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -29,7 +30,20 @@ class WelcomeScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return const NavBarRoots();
+                            // Pasar un usuario de prueba
+                            return NavBarRoots(
+                              user: User(
+                                id: 0,
+                                name: 'Guest',
+                                lastName: 'User',
+                                email: 'guest@example.com',
+                                password: 'password',
+                                address: 'Sin dirección registrada',
+                                phone: '0000000000',
+                                image:
+                                    'https://dthezntil550i.cloudfront.net/f4/latest/f41908291942413280009640715/1280_960/1b2d9510-d66d-43a2-971a-cfcbb600e7fe.png',
+                              ),
+                            );
                           },
                         ));
                       },

@@ -19,15 +19,22 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthService()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: const WelcomeScreen(),
-        routes: {
-          '/login': (ctx) => const LoginScreen(),
-          '/signup': (ctx) => const SignUpScreen(),
-          '/navbar': (ctx) => const NavBarRoots(), // Ruta a NavBarRoots
-          '/home': (ctx) =>
-              const WelcomeScreen(), // Define tu pantalla de inicio aquí
+      child: Consumer<AuthService>(
+        builder: (context, authService, _) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: authService.user == null
+                ? const WelcomeScreen()
+                : NavBarRoots(user: authService.user!),
+            routes: {
+              '/login': (ctx) => const LoginScreen(),
+              '/signup': (ctx) => const SignUpScreen(),
+              '/navbar': (ctx) => authService.user != null
+                  ? NavBarRoots(user: authService.user!)
+                  : const WelcomeScreen(),
+              '/home': (ctx) => const WelcomeScreen(),
+            },
+          );
         },
       ),
     );

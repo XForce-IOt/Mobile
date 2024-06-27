@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:movil/shared/services/auth_service.dart';
 import 'package:provider/provider.dart';
+import 'package:movil/shared/services/auth_service.dart';
 import 'login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
