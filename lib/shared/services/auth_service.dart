@@ -12,11 +12,11 @@ class AuthService with ChangeNotifier {
   User? get user => _user;
 
   final String baseUrl =
-      'https://backend-production-6ed3.up.railway.app/api/pet-health/v1/pet-owners';
+      'https://backend-production-6ed3.up.railway.app/api/pet-health/v1';
 
   Future<void> login(String email, String password) async {
     final hashedPassword = sha256.convert(utf8.encode(password)).toString();
-    final url = '$baseUrl/login';
+    final url = '$baseUrl/pet-owners';
 
     try {
       print('Login URL: $url'); // Log de la URL
@@ -25,12 +25,8 @@ class AuthService with ChangeNotifier {
             'password': hashedPassword,
           })}'); // Log del cuerpo de la solicitud
 
-      final response = await http.post(
+      final response = await http.get(
         Uri.parse(url),
-        body: json.encode({
-          'email': email,
-          'password': hashedPassword,
-        }),
         headers: {'Content-Type': 'application/json'},
       );
 
@@ -40,23 +36,32 @@ class AuthService with ChangeNotifier {
           'Login Response Body: ${response.body}'); // Log del cuerpo de la respuesta
 
       if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-        _user = User.fromJson(responseData['user']);
-        notifyListeners();
+        final List<dynamic> responseData = json.decode(response.body);
+        final user = responseData.firstWhere(
+          (item) =>
+              item['email'] == email && item['password'] == hashedPassword,
+          orElse: () => null,
+        );
+
+        if (user != null) {
+          _user = User.fromJson(user);
+          notifyListeners();
+        } else {
+          throw HttpException('Usuario o contraseña incorrectos');
+        }
       } else {
-        final responseData = json.decode(response.body);
-        throw HttpException(responseData['error'] ?? 'Error desconocido');
+        throw HttpException('Error desconocido');
       }
     } catch (error) {
       print('Login error: $error'); // Imprimir el error en la consola
-      throw error;
+      rethrow;
     }
   }
 
-  Future<void> signup(String name, String lastname, String email,
+  Future<void> signup(String name, String lastName, String email,
       String password, String phone) async {
     final hashedPassword = sha256.convert(utf8.encode(password)).toString();
-    final url = '$baseUrl/signup';
+    final url = '$baseUrl/pet-owners';
 
     const String defaultAddress = 'Sin dirección registrada';
     const String defaultImage =
@@ -66,7 +71,7 @@ class AuthService with ChangeNotifier {
       print('Signup URL: $url'); // Log de la URL
       print('Signup Request Body: ${json.encode({
             'name': name,
-            'lastname': lastname,
+            'lastName': lastName,
             'email': email,
             'password': hashedPassword,
             'address': defaultAddress,
@@ -78,7 +83,7 @@ class AuthService with ChangeNotifier {
         Uri.parse(url),
         body: json.encode({
           'name': name,
-          'lastname': lastname,
+          'lastName': lastName,
           'email': email,
           'password': hashedPassword,
           'address': defaultAddress,
@@ -95,7 +100,7 @@ class AuthService with ChangeNotifier {
 
       if (response.statusCode == 201) {
         final responseData = json.decode(response.body);
-        _user = User.fromJson(responseData['user']);
+        _user = User.fromJson(responseData);
         notifyListeners();
       } else {
         final responseData = json.decode(response.body);
@@ -103,7 +108,7 @@ class AuthService with ChangeNotifier {
       }
     } catch (error) {
       print('Signup error: $error'); // Imprimir el error en la consola
-      throw error;
+      rethrow;
     }
   }
 }
