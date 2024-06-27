@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:movil/shared/model/user_model.dart';
 
 class AuthService with ChangeNotifier {
-  String? _token;
-  String? _userId;
+  User? _user;
 
-  bool get isAuth {
-    return _token != null;
-  }
+  User? get user => _user;
 
   Future<void> login(String email, String password) async {
     final hashedPassword = sha256.convert(utf8.encode(password)).toString();
@@ -31,16 +29,15 @@ class AuthService with ChangeNotifier {
         throw Exception(responseData['error']);
       }
 
-      _token = responseData['token'];
-      _userId = responseData['userId'];
+      _user = User.fromJson(responseData['user']);
       notifyListeners();
     } catch (error) {
       rethrow;
     }
   }
 
-  Future<void> signup(
-      String name, String lastName, String email, String password) async {
+  Future<void> signup(String name, String lastname, String email,
+      String password, String address, String phone) async {
     final hashedPassword = sha256.convert(utf8.encode(password)).toString();
     final url = '${dotenv.env['BASE_URL']}/signup';
 
@@ -49,9 +46,11 @@ class AuthService with ChangeNotifier {
         Uri.parse(url),
         body: json.encode({
           'name': name,
-          'lastName': lastName,
+          'lastname': lastname,
           'email': email,
           'password': hashedPassword,
+          'address': address,
+          'phone': phone,
         }),
         headers: {'Content-Type': 'application/json'},
       );
@@ -60,6 +59,9 @@ class AuthService with ChangeNotifier {
       if (responseData['error'] != null) {
         throw Exception(responseData['error']);
       }
+
+      _user = User.fromJson(responseData['user']);
+      notifyListeners();
     } catch (error) {
       rethrow;
     }
