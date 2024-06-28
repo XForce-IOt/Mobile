@@ -37,19 +37,17 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   int selectedMetricIndex = -1;
   List<Pet> pets = [];
   bool isLoading = true;
-  int petOwnerId = 1;
-  //widget.user.id.toString()
+  late Future<void> _petsFuture;
 
   @override
   void initState() {
     super.initState();
+    _petsFuture = _loadPets();
+  }
+
+  Future<void> _loadPets() async {
     final petsProvider = Provider.of<PetService>(context, listen: false);
-    petsProvider.getPets(petOwnerId).then((_) {
-      setState(() {
-        pets = petsProvider.pets;
-        isLoading = false;
-      });
-    });
+    await petsProvider.getPets(widget.user.id);
   }
 
   void onMetricSelected(int index) {
@@ -68,88 +66,99 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF2BBCC5),
-        elevation: 0,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Row(
-              children: [
-                Icon(
-                  size: 30,
-                  Icons.person_2_outlined,
-                  color: Colors.white,
-                )
-              ],
-            ),
-            IconButton(
-              icon: const Icon(size: 30, Icons.notifications),
-              color: Colors.white,
-              onPressed: () {
-                // Acción del botón de notificaciones
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Notification button pressed')),
-                );
-              },
-            ),
-          ],
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF2BBCC5),
+          elevation: 0,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Row(
+                children: [
+                  Icon(
+                    size: 30,
+                    Icons.person_2_outlined,
+                    color: Colors.white,
+                  )
+                ],
+              ),
+              IconButton(
+                icon: const Icon(size: 30, Icons.notifications),
+                color: Colors.white,
+                onPressed: () {
+                  // Acción del botón de notificaciones
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Notification button pressed')),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
-      ),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                  height: 150,
-                  width: double.infinity,
-                  //color: const Color(0xFF2BBCC5),
-                  decoration: const BoxDecoration(
-                      color: Color(0xFF2BBCC5),
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(15),
-                          bottomRight: Radius.circular(15))),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Text(
-                      "${widget.user.name} ${widget.user.lastName}",
-                      style: GoogleFonts.workSans(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white),
-                    ),
-                  )),
-              Positioned(
-                top:
-                    65.0, // Posiciona la tarjeta en la parte superior del Container
-                left: 0.0, // Ajusta la posición horizontal
-                right: 0.0, // Ajusta la posición horizontal
-                child: Carousel(
-                  pets: pets,
-                  onPageChanged: onPetChanged,
-                ),
-              )
-            ],
-          ),
-          const SizedBox(height: 130),
-          IndexedStack(
-            index: selectedMetricIndex + 1, // Add 1 to handle initial state
-            children: [
-              buildMetricsGrid(),
-              buildMetricDetail(pets[selectedPetIndex], 'Heart Rate'),
-              buildMetricDetail(pets[selectedPetIndex], 'Activity Physics'),
-              buildMetricDetail(pets[selectedPetIndex], 'Temperature'),
-              buildMetricDetail(pets[selectedPetIndex], 'Sleep Quality'),
-              buildMetricDetail(pets[selectedPetIndex], 'GPS'),
-              buildMetricDetail(pets[selectedPetIndex], 'Hydration'),
-            ],
-          ),
-          //primera parte
-        ],
-      ),
-    );
+        body: FutureBuilder(
+            future: _petsFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else {
+                final petsProvider = Provider.of<PetService>(context);
+                final pets = petsProvider.pets;
+                return Column(mainAxisSize: MainAxisSize.min, children: [
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                          height: 150,
+                          width: double.infinity,
+                          //color: const Color(0xFF2BBCC5),
+                          decoration: const BoxDecoration(
+                              color: Color(0xFF2BBCC5),
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(15),
+                                  bottomRight: Radius.circular(15))),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Text(
+                              "${widget.user.name} ${widget.user.lastName}",
+                              style: GoogleFonts.workSans(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
+                            ),
+                          )),
+                      Positioned(
+                        top:
+                            65.0, // Posiciona la tarjeta en la parte superior del Container
+                        left: 0.0, // Ajusta la posición horizontal
+                        right: 0.0, // Ajusta la posición horizontal
+                        child: Carousel(
+                          pets: pets,
+                          onPageChanged: onPetChanged,
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 130),
+                  IndexedStack(
+                    index: selectedMetricIndex +
+                        1, // Add 1 to handle initial state
+                    children: [
+                      buildMetricsGrid(),
+                      buildMetricDetail(pets[selectedPetIndex], 'Heart Rate'),
+                      buildMetricDetail(
+                          pets[selectedPetIndex], 'Activity Physics'),
+                      buildMetricDetail(pets[selectedPetIndex], 'Temperature'),
+                      buildMetricDetail(
+                          pets[selectedPetIndex], 'Sleep Quality'),
+                      buildMetricDetail(pets[selectedPetIndex], 'GPS'),
+                      buildMetricDetail(pets[selectedPetIndex], 'Hydration'),
+                    ],
+                  ),
+                ]);
+              }
+            }));
   }
 
   Widget buildMetricsGrid() {
@@ -217,14 +226,6 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
             ),
             padding: const EdgeInsets.all(8.0),
             child: WidgetSelector(word: metric),
-            /*Text(
-              '$metric for ${pet.name}',
-              style: GoogleFonts.workSans(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
-            ),*/
           ),
           Row(
             mainAxisAlignment:
