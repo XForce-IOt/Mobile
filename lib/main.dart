@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:movil/shared/services/auth_service.dart';
+import 'package:movil/shared/services/pet_service.dart';
 import 'package:movil/presentation/screens/login_screen.dart';
 import 'package:movil/presentation/screens/signup_screen.dart';
 import 'package:movil/presentation/screens/welcome_screen.dart';
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthService()),
+        ChangeNotifierProvider(create: (_) => PetService()),
       ],
       child: Consumer<AuthService>(
         builder: (context, authService, _) {
