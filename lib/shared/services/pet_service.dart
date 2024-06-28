@@ -11,7 +11,7 @@ class PetService extends ChangeNotifier {
 
   Future<void> getPets(int petOwnerId) async {
     isLoading = true;
-    notifyListeners();
+    //notifyListeners();
 
     try {
       final url = Uri.parse('$baseUrl/$petOwnerId/pets');
@@ -21,13 +21,14 @@ class PetService extends ChangeNotifier {
         List<dynamic> body = json.decode(response.body);
         pets = body.map((dynamic item) => Pet.fromJson(item)).toList();
       } else {
-        throw Exception('Failed to load pets, status code: ${response.statusCode}, id del petowner ${petOwnerId}, body: ${response.body}');
+        throw Exception(
+            'Failed to load pets, status code: ${response.statusCode}, id del petowner ${petOwnerId}, body: ${response.body}');
       }
     } catch (error) {
       throw Exception('Failed to load pets: $error');
     } finally {
       isLoading = false;
-      notifyListeners();
+      //notifyListeners();
     }
   }
 
