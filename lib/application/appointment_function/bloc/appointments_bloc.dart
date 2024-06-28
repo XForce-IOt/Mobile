@@ -7,15 +7,29 @@ import 'package:movil/application/appointment_function/mappers/appointment_model
 import 'package:movil/application/appointment_function/repositorys/appointments_repo.dart';
 
 class AppointmentsBloc extends Bloc<AppointmentsEvent, AppointmentsState> {
-  AppointmentsBloc(): super(AppointmentsInitial()) {
+  AppointmentsBloc() : super(AppointmentsInitial()) {
     on<AppointmentsInitialFetchEvent>(appointmentsInitialFetchEvent);
+    on<AppointmentsReloadEvent>(onReloadEvent);
   }
 
   FutureOr<void> appointmentsInitialFetchEvent(
       AppointmentsInitialFetchEvent event, Emitter<dynamic> emit) async {
     emit(AppointmentsFetchingLoadingState());
     //List of Appointments
-    List<AppointmentModel> appointments = await AppointmentsRepo.fetchAppointments();
+    List<AppointmentModel> appointments =
+        await AppointmentsRepo.fetchAppointments();
     emit(AppointmentsFetchingSuccesfulState(appointments: appointments));
+  }
+
+  Future<void> onReloadEvent(AppointmentsReloadEvent event, Emitter<dynamic> emit) async {
+    emit(AppointmentsFetchingLoadingState());
+     try {
+      List<AppointmentModel> appointments =
+        await AppointmentsRepo.fetchAppointments();
+      emit(AppointmentsFetchingSuccesfulState(appointments: appointments));
+    } catch (e) {
+      emit(AppointmentsFetchingErrorState());
+    }
+
   }
 }

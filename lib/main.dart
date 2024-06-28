@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movil/application/appointment_function/bloc/appointments_bloc.dart';
+import 'package:movil/application/appointment_function/bloc/appointments_event.dart';
 import 'package:provider/provider.dart';
 import 'package:movil/shared/services/auth_service.dart';
 import 'package:movil/shared/services/pet_service.dart';
@@ -8,7 +11,16 @@ import 'package:movil/presentation/screens/welcome_screen.dart';
 import 'package:movil/presentation/widgets/navbar_roots.dart';
 
 void main() {
-  runApp(const MyApp());
+  /*
+  runApp(
+    const MyApp());*/
+
+    runApp(
+    BlocProvider(
+      create: (context) => AppointmentsBloc()..add(AppointmentsInitialFetchEvent()),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -39,7 +39,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   void initState() {
     petsBloc.add(PetsInitialFetchEvent());
     clinicsBloc.add(ClinicsInitialFetchEvent()); //inicia siempre
-    vetsBloc.add(VetsInitialFetchEvent()); //agrega el id de la clinica, mover init al stepper
+    vetsBloc.add(
+        VetsInitialFetchEvent()); //agrega el id de la clinica, mover init al stepper
     appointmentsBloc.add(AppointmentsInitialFetchEvent());
     super.initState();
   }
@@ -87,61 +88,81 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
             ),
           ),
           DefaultTabController(
-            length: 2, 
-            child: Expanded(
-              child: Scaffold(
-                appBar: AppBar(
-                  automaticallyImplyLeading: false, // Oculta la flecha de retroceso
-                  toolbarHeight: 0, //Oculta titulo
-                  bottom: const TabBar(
-                    tabs: [
-                      Tab(text: 'Your appointments'), 
+              length: 2,
+              child: Expanded(
+                child: Scaffold(
+                  appBar: AppBar(
+                    automaticallyImplyLeading:
+                        false, // Oculta la flecha de retroceso
+                    toolbarHeight: 0, //Oculta titulo
+                    bottom: const TabBar(tabs: [
+                      Tab(text: 'Your appointments'),
                       Tab(text: 'Add appointment')
-                  ]), 
-                ),
-                body: TabBarView(children: [
-                  BlocConsumer<AppointmentsBloc, AppointmentsState>(
-                    bloc: appointmentsBloc,
-                    listenWhen: (previous, current) => current is AppointmentsActionState,
-                    buildWhen: (previous, current) => current is! AppointmentsActionState,
-                    listener: (context, state) {},
-                    builder: (context, state) {
-                      switch (state.runtimeType) {
-                        case AppointmentsFetchingLoadingState:
-                          return const CircularProgressIndicator();
-                        case AppointmentsFetchingSuccesfulState:
-                          final successState =
-                              state as AppointmentsFetchingSuccesfulState;
-                          return AppointmentList(appointments: successState.appointments);
-                        default:
-                          return const CircularProgressIndicator();
-                      }
-                    },
+                    ]),
                   ),
-                  Expanded(
-              child: Stepper(
-            steps: stepsToCreateAppointment(),
-            currentStep: currentStep,
-            onStepContinue: () {
-              if (isLastStep) {
-              } else {
-                setState(() {
-                  currentStep += 1;
-                });
-              }
-            },
-            onStepCancel: isFirstStep
-                ? null
-                : () => setState(() {
-                      currentStep -= 1;
-                    }),
-            onStepTapped: (step) => setState(() {
-              currentStep = step;
-            }),
-          ))
-                ],),
+                  body: TabBarView(
+                    children: [
+                      Scaffold(
+                        appBar: AppBar(
+                          actions: [
+                            IconButton(
+                              icon: const Icon(Icons.refresh),
+                              onPressed: () {
+                                context
+                                    .read<AppointmentsBloc>()
+                                    .add(AppointmentsReloadEvent());
+                              },
+                            )
+                          ],
+                        ),
+                        body: BlocConsumer<AppointmentsBloc, AppointmentsState>(
+                          bloc: appointmentsBloc,
+                          listenWhen: (previous, current) =>
+                              current is AppointmentsActionState,
+                          buildWhen: (previous, current) =>
+                              current is! AppointmentsActionState,
+                          listener: (context, state) {},
+                          builder: (context, state) {
+                            switch (state.runtimeType) {
+                              case AppointmentsFetchingLoadingState:
+                                return const CircularProgressIndicator();
+                              case AppointmentsFetchingSuccesfulState:
+                                final successState =
+                                    state as AppointmentsFetchingSuccesfulState;
+                                return AppointmentList(
+                                    appointments: successState.appointments);
+
+                              default:
+                                return const CircularProgressIndicator();
+                            }
+                          },
+                        ),
+                      ),
+                      Expanded(
+                          child: Stepper(
+                        steps: stepsToCreateAppointment(),
+                        currentStep: currentStep,
+                        onStepContinue: () {
+                          if (isLastStep) {
+                          } else {
+                            setState(() {
+                              currentStep += 1;
+                            });
+                          }
+                        },
+                        onStepCancel: isFirstStep
+                            ? null
+                            : () => setState(() {
+                                  currentStep -= 1;
+                                }),
+                        onStepTapped: (step) => setState(() {
+                          currentStep = step;
+                        }),
+                      ))
+                    ],
+                  ),
                 ),
-            ))
+              ))
         ],
       ),
     );
@@ -187,8 +208,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     return const CircularProgressIndicator();
                 }
               },
-            )
-            ),
+            )),
         Step(
             isActive: currentStep >= 2,
             title: const Text('Add a description'),
@@ -197,4 +217,3 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 CreateAppointmentData())
       ];
 }
-
